@@ -5,17 +5,17 @@ const servicesData = [
   {
     title: "Vehicle Reservation",
     description: "With this app, a customer can book a vehicle, all type of vehicle : car, motorcyle, fly.",
-    imageUrl: "/service-car.png",
+    imageUrl: "/vehicule1.png",
   },
   {
     title: "Booking A Driver",
     description: "With this app, a customer should be able to book a driver with a car when he can not drive it.",
-    imageUrl: "/service-driver.png",
+    imageUrl: "/driver.png",
   },
   {
     title: "Management of a Vehicle Agency",
     description: "With this app, when you have an agency, you can be our partner by sign in your agency to our platform.",
-    imageUrl: "/service-agency.png",
+    imageUrl: "/agencies.png",
   },
 ];
 
