@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Search, Heart, User } from 'lucide-react';
+import { Search, Heart, User } from 'lucide-react';"use client"; // Obligatoire pour lire l'URL
+
+import { usePathname } from 'next/navigation';
 import AnimatedCarImage from './AnimatedCarImages';
 
 const servicesData = [
   {
-    title: "Vehicle Reservation",
-    description: "With this app, a customer can book a vehicle, all type of vehicle : car, motorcyle, fly.",
+    title: "Vehicule Reservation",
+    description: "With this app, a customer can book a vehicule, all type of vehicule : car, motorcyle, fly.",
     imageUrl: "/service-car.png",
   },
   {
@@ -15,7 +17,7 @@ const servicesData = [
     imageUrl: "/service-driver.png",
   },
   {
-    title: "Management of a Vehicle Agency",
+    title: "Management of a Vehicule Agency",
     description: "With this app, when you have an agency, you can be our partner by sign in your agency to our platform.",
     imageUrl: "/service-agency.png",
   },
@@ -67,10 +69,9 @@ export default function Landings() {
           <button className="p-2.5 hover:bg-gray-100 rounded-full transition-colors">
             <Heart className="w-5 h-5 text-gray-600" />
           </button>
-          <button className="p-2.5 hover:bg-gray-100 rounded-full transition-colors">
-            <User className="w-5 h-5 text-gray-600" />
-          </button>
-          <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+          <div className="w-10 h-10 bg-gray-200 rounded-full">
+            <User className="w-5 h-5 text-gray-600 m-2.5" />
+          </div>
         </div>
       </header>
 
@@ -86,7 +87,7 @@ export default function Landings() {
                 in a click.
               </h2>
               <p className="text-blue-100 text-xl leading-relaxed font-light">
-                You can rent all type of vehicle and for many
+                You can rent all type of vehicule and for many
                 <br />
                 occasion. And in many agencies.
               </p>

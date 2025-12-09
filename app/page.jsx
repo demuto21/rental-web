@@ -1,6 +1,6 @@
 import OurServices from '@/components/OurService';
 import QualityAgencies from "@/components/QualityAgencies";
-import FeaturedVehicles from "@/components/FeaturedVehicles";
+import Featuredvehicules from "@/components/FeaturedVehicules";
 import ReviewsPublics from '@/components/ReviewsPublics';
 import WhoAreWe from '@/components/WhoAreWe';
 import StatsSection from '@/components/StatsSection';
@@ -14,7 +14,7 @@ export default function HomePage() {
     <>
       <OurServices />
       <QualityAgencies />
-      <FeaturedVehicles />
+      <Featuredvehicules />
       <WhoAreWe />
       <ReviewsPublics />
       <ReviewCard />

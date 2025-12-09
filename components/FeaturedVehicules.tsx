@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from 'next/link'; // Import indispensable
+
 
 interface Vehicle {
   name: string;
@@ -17,6 +19,22 @@ const vehicles: Vehicle[] = [
   {
     name: "Limousine alpha",
     image: "/assets/limousine.jpg",
+    price: "100000f /Jour",
+    type: "Automatic",
+    fuel: "10L",
+    rating: 5.0
+  },
+  {
+    name: "Mercedes GLE",
+    image: "/assets/mercedes gle.webp",
+    price: "100000f /Jour",
+    type: "Automatic",
+    fuel: "10L",
+    rating: 5.0
+  },
+  {
+    name: "Van mercedes",
+    image: "/assets/mercedes van.webp",
     price: "100000f /Jour",
     type: "Automatic",
     fuel: "10L",
@@ -62,20 +80,29 @@ const vehicles: Vehicle[] = [
     fuel: "15L",
     rating: 3.8,
   },
-
 ];
 
 export default function FeaturedVehicles() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const slidesCount = 3;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % slidesCount);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDotClick = (index: number) => {
     setCurrentIndex(index);
   };
 
   return (
-    <section id="featured-vehicles" className="py-12 px-4 bg-white text-center">      <h2 className="text-3xl font-bold text-blue-600 mb-2">
-      Featured Vehicles
-    </h2>
+    <section id="featured-vehicles" className="py-12 px-4 bg-white-50 text-center">
+      <h2 className="text-3xl font-bold text-blue-600 mb-2">
+        Featured Vehicles
+      </h2>
       <p className="text-gray-500 mb-8">
         Nous avons des véhicules variés : voitures, camions, tricycles...
         venant de plusieurs agences.
@@ -84,21 +111,24 @@ export default function FeaturedVehicles() {
       {/* Carrousel container */}
       <div className="overflow-hidden relative max-w-6xl mx-auto">
         <motion.div
-          className="flex gap-0.5 transition-transform duration-500 ease-in-out" //
+          // Suppression de 'gap-6' pour rapprocher les cartes
+          className="flex transition-transform duration-500 ease-in-out"
           animate={{ x: `-${currentIndex * 100}%` }}
         >
           {vehicles.map((v, i) => (
             <div
               key={i}
-              className="min-w-full flex justify-center gap-0.5 sm:min-w-[33.33%]"
+              // p-2 crée un petit espacement (8px) au lieu du grand écart précédent
+              className="min-w-full sm:min-w-[33.33333%] p-2 flex justify-center"
             >
-              <div className="bg-white rounded-2xl shadow p-3 w-72">
+              {/* w-full permet à la carte de prendre tout l'espace disponible dans son slot */}
+              <div className="bg-white rounded-2xl shadow p-3 w-full">
                 <Image
                   src={v.image}
                   alt={v.name}
-                  width={250}
-                  height={150}
-                  className="rounded-xl object-cover h-40 w-full"
+                  width={400}
+                  height={250}
+                  className="rounded-xl object-cover h-48 w-full"
                 />
                 <div className="mt-3 text-left">
                   <h3 className="text-blue-600 font-bold text-lg">
@@ -118,40 +148,34 @@ export default function FeaturedVehicles() {
             </div>
           ))}
         </motion.div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
+
+        {/* Dots */}
+        <div className="flex justify-center mt-6 gap-2">
+          {Array.from({ length: slidesCount }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => handleDotClick(i)}
+              className={`w-3 h-3 rounded-full transition-colors duration-300 ${i === currentIndex ? "bg-blue-600" : "bg-gray-300"
+                }`}
+            />
+          ))}
+        </div>
         <div className="flex justify-center">
+            <Link href="/CarsPage">
           <button className="bg-orange-500 hover:bg-orange-600 text-white text-lg font-semibold px-8 py-2 rounded-full">View More</button>
+        </Link>
         </div>
       </div>
-
-      {/* Dots */}
-      <div className="flex justify-center mt-6 gap-2">
-        {vehicles.slice(0, 3).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => handleDotClick(i)}
-            className={`w-3 h-3 rounded-full ${i === currentIndex ? "bg-blue-600" : "bg-gray-300"
-              }`}
-          />
-        ))}
-      </div>
-      {/* ======================================= */}
-      {/* =       SECTION WHY CHOOSE US         = */}
-      {/* ======================================= */}
+      {/* Section Why Choose Us */}
       <section className="py-20 px-8 bg-white">
         <div className="max-w-7xl mx-auto">
-
-          {/* Titre de la section */}
-          <h2 className="text-5xl font-bold text-center text-[#2563EB] mb-6">
-            Why Choose Us ?
-          </h2>
+          <h2 className="text-3xl font-bold text-blue-600 mb-2">Why choose us</h2>
           <p className="text-center text-gray-700 text-lg mb-20 max-w-4xl mx-auto">
             We present many guarantees and advantages when you rent a car with us for your trip. Here are some of the advantages that you will get
           </p>
-
-          {/* Grille des avantages */}
-          <div className="grid grid-cols-3 gap-x-20 gap-y-16">
-
-            {/* Avantage 1: Easy Rent */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-16 text-left">
             <div className="flex gap-6">
               <div className="flex-shrink-0">
                 <div className="w-20 h-20 bg-[#F76513] rounded-2xl flex items-center justify-center">
@@ -167,8 +191,6 @@ export default function FeaturedVehicles() {
                 </p>
               </div>
             </div>
-
-            {/* Avantage 2: Premium Quality */}
             <div className="flex gap-6">
               <div className="flex-shrink-0">
                 <div className="w-20 h-20 bg-[#F76513] rounded-2xl flex items-center justify-center">
@@ -184,8 +206,6 @@ export default function FeaturedVehicles() {
                 </p>
               </div>
             </div>
-
-            {/* Avantage 3: Professional Agent */}
             <div className="flex gap-6">
               <div className="flex-shrink-0">
                 <div className="w-20 h-20 bg-[#F76513] rounded-2xl flex items-center justify-center">
@@ -201,8 +221,6 @@ export default function FeaturedVehicles() {
                 </p>
               </div>
             </div>
-
-            {/* Avantage 4: Car Safety */}
             <div className="flex gap-6">
               <div className="flex-shrink-0">
                 <div className="w-20 h-20 bg-[#F76513] rounded-2xl flex items-center justify-center">
@@ -218,8 +236,6 @@ export default function FeaturedVehicles() {
                 </p>
               </div>
             </div>
-
-            {/* Avantage 5: Refund */}
             <div className="flex gap-6">
               <div className="flex-shrink-0">
                 <div className="w-20 h-20 bg-[#F76513] rounded-2xl flex items-center justify-center">
@@ -235,8 +251,6 @@ export default function FeaturedVehicles() {
                 </p>
               </div>
             </div>
-
-            {/* Avantage 6: Live Monitoring */}
             <div className="flex gap-6">
               <div className="flex-shrink-0">
                 <div className="w-20 h-20 bg-[#F76513] rounded-2xl flex items-center justify-center">
@@ -252,11 +266,9 @@ export default function FeaturedVehicles() {
                 </p>
               </div>
             </div>
-
           </div>
         </div>
       </section>
     </section>
-
   );
 }

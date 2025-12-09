@@ -6,12 +6,9 @@ export default function WhoAreWe() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-white">
-              <h1 className="text-5xl md:text-6xl font-bold mb-8">
-                Who are we
-              </h1>
+              <h1 className="text-3xl font-bold text-white-600 mb-2">Who are we</h1>
               <p className="text-xl leading-relaxed">
-                Easy-rent est une application de location des véhicules d'une part et de gestion des agences de véhicules d'une autre part
-              </p>
+Easy-rent is an application for vehicle rental on one hand and for vehicle agency management on the other hand.              </p>
             </div>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">

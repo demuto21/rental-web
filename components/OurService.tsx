@@ -4,8 +4,8 @@ export default function OurServices() {
   const services = [
     {
       id: 1,
-      title: "Vehicle Reservation",
-      description: "With this app, a customer can book a vehicle, all type of vehicle : car, motorcyle, fly.",
+      title: "Vehicule Reservation",
+      description: "With this app, a customer can book a vehicule, all type of vehicule : car, motorcyle, fly.",
       image: "/vehicule1.png", // Remplace par le nom de ton image
     },
     {
@@ -16,7 +16,7 @@ export default function OurServices() {
     },
     {
       id: 3,
-      title: "Management of a Vehicle Agency",
+      title: "Management of a vehicule Agency",
       description: "With this app, when you have an agency, you can be our partner by sign in your agency to our platform.",
       image: "/agencies.png", // Remplace par le nom de ton image
     },

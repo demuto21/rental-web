@@ -3,7 +3,7 @@ import { FaInstagram, FaTwitter, FaYoutube, FaFacebookF, FaLinkedinIn } from 're
 
 export default function Footer() {
     return (
-        <footer id = "footer" className="bg-white text-gray-700"> {/* Fond blanc, texte gris */}
+        <footer id="footer" className="bg-white text-gray-700"> {/* Fond blanc, texte gris */}
             <div className="container mx-auto px-6 py-16">
 
                 {/* Grille principale du Footer */}
@@ -46,9 +46,11 @@ export default function Footer() {
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900">Legal</h3>
                         <ul className="mt-4 space-y-2">
-                            <li><Link href="/mentions-legales" className="hover:underline">Mentions legales</Link></li>
-                            <li><Link href="/cgv" className="hover:underline">CGV</Link></li>
-                            <li><Link href="/confidentialite" className="hover:underline">Confidentialite</Link></li>
+                            <li><Link href="/mentions-legales" className="hover:underline">Legal Notice
+                            </Link></li>
+                            <li><Link href="/cgv" className="hover:underline">Terms and Conditions
+                            </Link></li>
+                            <li><Link href="/confidentialite" className="hover:underline">Privacy</Link></li>
                             <li><Link href="/cookies" className="hover:underline">Cookies</Link></li>
                         </ul>
                     </div>
@@ -57,10 +59,10 @@ export default function Footer() {
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900">Services</h3>
                         <ul className="mt-4 space-y-2">
-                            <li><Link href="/financement" className="hover:underline">Financement</Link></li>
-                            <li><Link href="/assurance" className="hover:underline">Assurance</Link></li>
-                            <li><Link href="/garantie" className="hover:underline">Garantie</Link></li>
-                            <li><Link href="/livraison" className="hover:underline">Livraison</Link></li>
+                            <li><Link href="/financement" className="hover:underline">Financing</Link></li>
+                            <li><Link href="/assurance" className="hover:underline">Insurance</Link></li>
+                            <li><Link href="/garantie" className="hover:underline">Warranty</Link></li>
+                            <li><Link href="/livraison" className="hover:underline">Delivery</Link></li>
                         </ul>
                     </div>
 
@@ -75,9 +77,9 @@ export default function Footer() {
                                 </a>
                             </li>
                             {/* J'ajoute un exemple pour le téléphone, même si l'icône est petite */}
-                            {/* <li>
-                <a href="tel:+33123456789" className="hover:underline">+33 1 23 45 67 89</a>
-              </li> */}
+                            <li>
+                <a href="tel:+33123456789" className="hover:underline">+237 699999999</a>
+              </li>
                         </ul>
                     </div>
 
@@ -87,13 +89,13 @@ export default function Footer() {
             {/* Ligne de séparation et Copyright */}
             <div className="border-t border-gray-200">
                 <div className="container mx-auto px-6 py-6 text-center text-sm text-gray-500">
-                    © 2025 Easy-rent. Tous droits réservés
+                    © 2025 Easy-rent. All rights reserved
                 </div>
             </div>
             {/* ----- BARRES DE PIED DE PAGE (Footer Bars) ----- */}
-      <div className="mt-16">
-        <div className="h-4 bg-blue-600"></div>
-      </div>
+            <div className="mt-16">
+                <div className="h-4 bg-blue-600"></div>
+            </div>
         </footer>
     );
 }
