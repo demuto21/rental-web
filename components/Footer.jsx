@@ -93,7 +93,6 @@ export default function Footer() {
             {/* ----- BARRES DE PIED DE PAGE (Footer Bars) ----- */}
       <div className="mt-16">
         <div className="h-4 bg-blue-600"></div>
-        <div className="h-2 bg-orange-500"></div>
       </div>
         </footer>
     );

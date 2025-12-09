@@ -49,8 +49,7 @@ const agencies: Agency[] = [
 
 export default function QualityAgencies() {
   return (
-    <section id ="agencies" className="py-12 px-4 bg-gray-50 text-center">
-      <h2 className="text-3xl font-bold text-blue-600 mb-2">Our Quality Agencies</h2>
+    <section id="agencies" className="py-12 px-4 bg-white text-center">      <h2 className="text-3xl font-bold text-blue-600 mb-2">Our Quality Agencies</h2>
       <p className="text-gray-500 mb-8 max-w-2xl mx-auto">
         Découvrez nos agences partenaires grâce à qui on peut louer des véhicules à des clients
       </p>
