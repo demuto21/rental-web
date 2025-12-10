@@ -137,8 +137,8 @@ export default function CarsPage() {
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
             <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
             <Link href="/CarsPage" className="text-blue-600">Cars</Link>
-            <Link href="#" className="hover:text-blue-600 transition-colors">Agencies</Link>
-            <Link href="#" className="hover:text-blue-600 transition-colors">Help</Link>
+            <Link href="/Agencies" className="hover:text-blue-600 transition-colors">Agencies</Link>
+            <Link href="/Help" className="hover:text-blue-600 transition-colors">Help</Link>
           </nav>
 
           {/* Actions */}
@@ -258,7 +258,7 @@ export default function CarsPage() {
              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
              <div className="relative z-10">
                  <h1 className="text-3xl md:text-4xl font-bold mb-2">Trouvez votre voiture idéale</h1>
-                 <p className="text-blue-100">Plus de 500 véhicules disponibles à Yaoundé et Douala.</p>
+                 <p className="text-blue-100">Plus de 500 véhicules disponibles sur l'étendu du territoire.</p>
              </div>
           </div>
 
@@ -284,7 +284,7 @@ export default function CarsPage() {
           {/* SECTION 3: PROMOTIONS */}
           <div className="mb-16">
             <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                <span className="bg-orange-100 text-orange-600 p-1 rounded">🔥</span> Offres Spéciales
+                <span className="bg-orange-100 text-orange-600 p-1 rounded"></span> Offres Spéciales
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {promoCars.map((car, index) => <CarCard key={`promo-${index}`} data={car} />)}

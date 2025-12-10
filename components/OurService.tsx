@@ -1,75 +1,87 @@
+// components/OurService.tsx
+"use client";
+
 import Image from 'next/image';
+import { Car, UserCheck, Building2, ArrowRight } from 'lucide-react';
 
 export default function OurServices() {
   const services = [
     {
       id: 1,
-      title: "Vehicule Reservation",
-      description: "With this app, a customer can book a vehicule, all type of vehicule : car, motorcyle, fly.",
-      image: "/vehicule1.png", // Remplace par le nom de ton image
+      title: "Réservation de Véhicule",
+      description: "Réservez tout type de véhicule en un clic : voitures, motos, et plus encore pour vos déplacements.",
+      image: "/assets/vehicule1.png", 
+      icon: Car,
+      color: "blue"
     },
     {
       id: 2,
-      title: "Booking A Driver",
-      description: "With this app, a customer should be able to book a driver with a car when he can not drive it.",
-      image: "/driver.png", // Remplace par le nom de ton image
+      title: "Chauffeur Privé",
+      description: "Optez pour le confort en réservant un chauffeur professionnel pour vous conduire en toute sécurité.",
+      image: "/assets/driver.png",
+      icon: UserCheck,
+      color: "orange"
     },
     {
       id: 3,
-      title: "Management of a vehicule Agency",
-      description: "With this app, when you have an agency, you can be our partner by sign in your agency to our platform.",
-      image: "/agencies.png", // Remplace par le nom de ton image
+      title: "Gestion d'Agence",
+      description: "Vous avez une agence ? Rejoignez notre réseau et gérez votre flotte directement depuis notre plateforme.",
+      image: "/assets/agencies.png",
+      icon: Building2,
+      color: "blue"
     },
   ];
 
   return (
-    <section className="py-16 px-8 bg-white">
-      <div className="max-w-6xl mx-auto">
-        {/* Titre de la section */}
-        <h2 className="text-4xl font-bold text-[#2563EB] text-center mb-16">
-          Our services
+    <section className="py-20 px-6 max-w-[1440px] mx-auto">
+      <div className="text-center mb-16">
+        <span className="text-orange-500 font-bold tracking-wider text-sm uppercase">Nos Services</span>
+        <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mt-2">
+          Tout ce dont vous avez besoin
         </h2>
+        <p className="text-slate-500 mt-4 max-w-2xl mx-auto text-lg">
+          Une suite complète de services pour faciliter vos déplacements et la gestion de vos locations.
+        </p>
+      </div>
 
-        {/* Liste des services */}
-        <div className="space-y-12">
-          {services.map((service, index) => (
-            <div
-              key={service.id}
-              className={`flex items-center gap-12 ${
-                index % 2 === 0 ? '' : 'flex-row-reverse'
-              }`}
-            >
-              {/* Image avec cadre bleu */}
-              <div className="flex-shrink-0">
-                <div className="relative bg-[#2563EB] rounded-3xl p-1.5 shadow-lg">
-                  <div className="bg-white rounded-2xl overflow-hidden w-[280px] h-[200px]">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      width={280}
-                      height={200}
-                      className="object-cover w-full h-full"
-                    />
-                  </div>
-                  {/* Bouton View More */}
-                  <button className="absolute -bottom-4 right-6 bg-[#F76513] hover:bg-[#e55a0f] text-white font-semibold px-6 py-2.5 rounded-lg shadow-lg transition-all hover:scale-105">
-                    View More
-                  </button>
-                </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {services.map((service) => (
+          <div
+            key={service.id}
+            className="group bg-white rounded-3xl p-4 shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 flex flex-col"
+          >
+            {/* Image Container */}
+            <div className={`relative h-64 w-full rounded-2xl overflow-hidden mb-6 ${service.color === 'orange' ? 'bg-orange-50' : 'bg-blue-50'}`}>
+              <div className="absolute inset-0 flex items-center justify-center p-6 group-hover:scale-105 transition-transform duration-500">
+                 <Image
+                  src={service.image}
+                  alt={service.title}
+                  width={400}
+                  height={300}
+                  className="object-contain w-full h-full drop-shadow-xl"
+                />
               </div>
-
-              {/* Contenu texte */}
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 text-base leading-relaxed">
-                  {service.description}
-                </p>
+              {/* Badge Icon */}
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-xl shadow-sm">
+                <service.icon className={`w-6 h-6 ${service.color === 'orange' ? 'text-orange-500' : 'text-blue-600'}`} />
               </div>
             </div>
-          ))}
-        </div>
+
+            {/* Content */}
+            <div className="px-4 pb-4 flex-1 flex flex-col">
+              <h3 className="text-2xl font-bold text-slate-800 mb-3 group-hover:text-blue-600 transition-colors">
+                {service.title}
+              </h3>
+              <p className="text-slate-500 leading-relaxed mb-6 flex-1">
+                {service.description}
+              </p>
+              
+              <button className={`flex items-center gap-2 font-bold transition-all ${service.color === 'orange' ? 'text-orange-500 hover:text-orange-600' : 'text-blue-600 hover:text-blue-700'}`}>
+                En savoir plus <ArrowRight size={18} />
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

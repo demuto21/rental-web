@@ -1,34 +1,64 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
-import { Search, HelpCircle, BookOpen, MessageCircle, Mail, Phone, FileText, Video, Zap, Shield, Settings, Users } from 'lucide-react';
+import Link from 'next/link';
+import { 
+  Search, Heart, Settings, Car, HelpCircle, 
+  MessageCircle, Mail, Phone, Video, 
+  FileText, Shield, User, CreditCard, ChevronRight, Zap
+} from 'lucide-react';
 
-const HelpPage = () => {
+// --- COMPOSANTS UI ---
+
+const QuickActionCard = ({ icon: Icon, title, desc, color }: any) => (
+  <div className="bg-white p-6 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-100 group cursor-pointer">
+    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${color}`}>
+      <Icon className="w-6 h-6 text-white" />
+    </div>
+    <h3 className="font-bold text-slate-800 text-lg mb-2 group-hover:text-blue-600 transition-colors">{title}</h3>
+    <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+  </div>
+);
+
+const FaqItem = ({ title, category, views }: any) => (
+  <div className="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-md transition-all cursor-pointer group">
+    <div className="flex items-center gap-4">
+      <div className="p-2 bg-slate-50 rounded-lg text-slate-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+        <FileText size={20} />
+      </div>
+      <div>
+        <h4 className="font-semibold text-slate-800 group-hover:text-blue-700">{title}</h4>
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-xs font-medium text-slate-400 uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded">{category}</span>
+          <span className="text-xs text-slate-400">• {views} vues</span>
+        </div>
+      </div>
+    </div>
+    <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
+      <ChevronRight size={18} />
+    </div>
+  </div>
+);
+
+export default function HelpPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = [
     { id: 'all', name: 'Tout', icon: HelpCircle },
     { id: 'getting-started', name: 'Démarrage', icon: Zap },
-    { id: 'account', name: 'Compte', icon: Users },
+    { id: 'account', name: 'Compte', icon: User },
     { id: 'security', name: 'Sécurité', icon: Shield },
-    { id: 'settings', name: 'Paramètres', icon: Settings },
+    { id: 'billing', name: 'Facturation', icon: CreditCard },
   ];
 
   const helpTopics = [
     { title: 'Comment créer un compte ?', category: 'getting-started', views: '2.5k' },
     { title: 'Réinitialiser mon mot de passe', category: 'security', views: '1.8k' },
-    { title: 'Gérer mes préférences', category: 'settings', views: '1.2k' },
-    { title: 'Modifier mes informations', category: 'account', views: '950' },
+    { title: 'Gérer mes préférences de paiement', category: 'billing', views: '1.2k' },
+    { title: 'Modifier mes informations personnelles', category: 'account', views: '950' },
     { title: 'Activer l\'authentification à deux facteurs', category: 'security', views: '780' },
-    { title: 'Supprimer mon compte', category: 'account', views: '620' },
-  ];
-
-  const quickActions = [
-    { icon: MessageCircle, title: 'Chat en direct', description: 'Discutez avec notre équipe', color: 'from-blue-500 to-cyan-500' },
-    { icon: Mail, title: 'Email support', description: 'Envoyez-nous un email', color: 'from-purple-500 to-pink-500' },
-    { icon: Phone, title: 'Téléphone', description: 'Appelez notre service', color: 'from-orange-500 to-red-500' },
-    { icon: Video, title: 'Tutoriels vidéo', description: 'Regardez nos guides', color: 'from-emerald-500 to-teal-500' },
+    { title: 'Politique de remboursement', category: 'billing', views: '620' },
   ];
 
   const filteredTopics = activeCategory === 'all' 
@@ -36,174 +66,177 @@ const HelpPage = () => {
     : helpTopics.filter(topic => topic.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
-                <HelpCircle className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-lg font-bold text-slate-800">Support</span>
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
+      
+      {/* ======================================= */}
+      {/* === NAVBAR (Style Premium Unifié) === */}
+      {/* ======================================= */}
+      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 px-6 md:px-12 py-4">
+        <div className="flex items-center justify-between max-w-[1440px] mx-auto">
+          {/* Logo */}
+          <Link href="/" className="text-2xl font-bold flex items-center gap-1">
+            <div className="bg-blue-600 text-white p-1 rounded-lg">
+                <Car size={24} />
             </div>
-            <nav className="hidden md:flex items-center space-x-6 text-sm">
-              <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors font-medium">Accueil</a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors font-medium">Guide</a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors font-medium">Communauté</a>
-              <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors font-medium">FAQ</a>
-            </nav>
+            <span className="text-blue-600">EASY</span>
+            <span className="text-orange-500">-RENT</span>
+          </Link>
+
+          {/* Search Bar Desktop (Désactivée ici car on a une grosse barre de recherche dans le Hero) */}
+          <div className="hidden md:flex flex-1 max-w-lg mx-8 opacity-0 pointer-events-none">
+             {/* Placeholder invisible pour garder l'alignement */}
+             <input type="text" />
+          </div>
+
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
+            <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+            <Link href="/CarsPage" className="hover:text-blue-600 transition-colors">Cars</Link>
+            <Link href="/Agencies" className="hover:text-blue-600 transition-colors">Agencies</Link>
+            <Link href="/Help" className="text-blue-600 border-b-2 border-blue-600 pb-1">Help</Link>
+          </nav>
+
+          {/* Actions */}
+          <div className="flex gap-4 items-center pl-4 border-l border-slate-200 ml-4">
+            <button className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition">
+              <Heart size={20} />
+            </button>
+            <button className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition text-slate-600">
+                <Settings size={20} />
+            </button>
+            <div className="w-9 h-9 bg-gradient-to-tr from-orange-400 to-orange-600 rounded-full border-2 border-white shadow-sm"></div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <div className="max-w-5xl mx-auto px-6 pt-16 pb-12 text-center">
-        <div className="inline-block mb-4">
-          <div className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full text-white text-sm font-medium shadow-lg">
-            Centre d'aide
+      {/* ======================================= */}
+      {/* === HERO SECTION (Centre d'aide) === */}
+      {/* ======================================= */}
+      <section className="bg-[#2563EB] px-6 pt-16 pb-24 rounded-b-[3rem] shadow-lg mb-12 relative overflow-hidden">
+        {/* Background Shapes */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl -ml-10 -mb-10"></div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <span className="inline-block py-1 px-3 rounded-full bg-blue-500/30 text-blue-100 text-xs font-bold mb-6 border border-blue-400/30 uppercase tracking-widest">
+            Support Center
+          </span>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Comment pouvons-nous <br/> <span className="text-orange-400">vous aider ?</span>
+          </h1>
+          <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">
+            Recherchez des réponses à vos questions, parcourez la documentation ou contactez notre équipe support.
+          </p>
+
+          {/* Search Input Large */}
+          <div className="relative max-w-2xl mx-auto">
+            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+              <Search className="h-6 w-6 text-slate-400" />
+            </div>
+            <input
+              type="text"
+              className="block w-full pl-14 pr-6 py-5 rounded-2xl border-none shadow-2xl text-slate-900 placeholder:text-slate-400 focus:ring-4 focus:ring-blue-400/50 text-lg"
+              placeholder="Rechercher un problème, une question..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
         </div>
+      </section>
+
+      {/* ======================================= */}
+      {/* === MAIN CONTENT === */}
+      {/* ======================================= */}
+      <main className="max-w-[1440px] mx-auto px-6 pb-20 -mt-16 relative z-20">
         
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 bg-clip-text text-transparent">
-          page help
-        </h1>
-        
-        <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto">
-          Trouvez rapidement les réponses à vos questions et découvrez comment tirer le meilleur parti de nos services
-        </p>
-
-        {/* Search Section */}
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
-            <h2 className="text-2xl font-bold text-blue-600 mb-6">
-              How can we help you ?
-            </h2>
-            
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Rechercher dans l'aide..."
-                className="w-full pl-12 pr-4 py-4 border-2 border-slate-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-slate-700 placeholder-slate-400"
-              />
-            </div>
-
-            {/* Popular Searches */}
-            <div className="mt-6 flex flex-wrap gap-2 justify-center">
-              {['Connexion', 'Facturation', 'API', 'Sécurité'].map((tag) => (
-                <button
-                  key={tag}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full text-sm font-medium transition-colors"
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Categories */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex flex-wrap gap-3 justify-center mb-12">
-          {categories.map((category) => {
-            const Icon = category.icon;
-            return (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center space-x-2 ${
-                  activeCategory === category.id
-                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30'
-                    : 'bg-white text-slate-600 hover:bg-slate-50 shadow-md hover:shadow-lg'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{category.name}</span>
-              </button>
-            );
-          })}
-        </div>
-
         {/* Quick Actions Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {quickActions.map((action, idx) => {
-            const Icon = action.icon;
-            return (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer group border border-slate-200"
-              >
-                <div className={`w-14 h-14 bg-gradient-to-br ${action.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg`}>
-                  <Icon className="w-7 h-7 text-white" />
-                </div>
-                <h3 className="font-bold text-slate-800 text-lg mb-2">{action.title}</h3>
-                <p className="text-slate-600 text-sm">{action.description}</p>
+          <QuickActionCard 
+            icon={MessageCircle} 
+            title="Chat en direct" 
+            desc="Discutez instantanément avec notre équipe support." 
+            color="bg-blue-500" 
+          />
+          <QuickActionCard 
+            icon={Mail} 
+            title="Email Support" 
+            desc="Envoyez-nous un email, réponse sous 24h." 
+            color="bg-purple-500" 
+          />
+          <QuickActionCard 
+            icon={Phone} 
+            title="Téléphone" 
+            desc="Appelez-nous directement pour une urgence." 
+            color="bg-orange-500" 
+          />
+          <QuickActionCard 
+            icon={Video} 
+            title="Tutoriels Vidéo" 
+            desc="Regardez nos guides pour apprendre à utiliser la plateforme." 
+            color="bg-emerald-500" 
+          />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          {/* Sidebar Categories */}
+          <div className="lg:col-span-3">
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 sticky top-28">
+              <h3 className="font-bold text-slate-800 mb-4 px-2">Catégories</h3>
+              <div className="space-y-1">
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm ${
+                      activeCategory === cat.id 
+                        ? 'bg-blue-600 text-white shadow-md' 
+                        : 'text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <cat.icon size={18} />
+                    {cat.name}
+                  </button>
+                ))}
               </div>
-            );
-          })}
-        </div>
-
-        {/* Popular Topics */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-slate-800 flex items-center">
-              <BookOpen className="w-6 h-6 mr-3 text-blue-500" />
-              Sujets populaires
-            </h2>
-            <button className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-              Voir tout →
-            </button>
+            </div>
           </div>
 
-          <div className="space-y-3">
-            {filteredTopics.map((topic, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between p-4 hover:bg-slate-50 rounded-xl transition-all cursor-pointer group border border-transparent hover:border-slate-200"
-              >
-                <div className="flex items-center space-x-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <FileText className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
-                      {topic.title}
-                    </h3>
-                    <p className="text-sm text-slate-500">{topic.views} vues</p>
-                  </div>
-                </div>
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-blue-600 font-medium">→</span>
+          {/* Content FAQ */}
+          <div className="lg:col-span-9 space-y-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-800">Sujets Populaires</h2>
+              <button className="text-blue-600 text-sm font-bold hover:underline">Voir tout</button>
+            </div>
+
+            <div className="space-y-4">
+              {filteredTopics.map((topic, index) => (
+                <FaqItem key={index} {...topic} />
+              ))}
+            </div>
+
+            {/* CTA Box */}
+            <div className="mt-12 bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-10 text-center relative overflow-hidden shadow-xl">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+              <div className="relative z-10">
+                <h3 className="text-2xl font-bold text-white mb-4">Vous ne trouvez pas votre réponse ?</h3>
+                <p className="text-slate-400 mb-8 max-w-lg mx-auto">
+                  Notre équipe est disponible 24h/24 et 7j/7 pour vous aider à résoudre vos problèmes de location.
+                </p>
+                <div className="flex justify-center gap-4">
+                  <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-blue-600/25">
+                    Ouvrir un ticket
+                  </button>
+                  <button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-3 rounded-xl font-bold transition-all backdrop-blur-sm">
+                    Consulter le Forum
+                  </button>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
 
-        {/* CTA Section */}
-        <div className="mt-16 bg-gradient-to-r from-blue-500 via-indigo-600 to-purple-600 rounded-2xl p-12 text-center shadow-2xl">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Vous ne trouvez pas ce que vous cherchez ?
-          </h2>
-          <p className="text-blue-100 mb-8 text-lg">
-            Notre équipe support est là pour vous aider 24/7
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <button className="px-8 py-4 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow-lg">
-              Contacter le support
-            </button>
-            <button className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-xl font-bold hover:bg-white/30 transition-colors">
-              Parcourir la documentation
-            </button>
-          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
-};
-
-export default HelpPage;
+}
