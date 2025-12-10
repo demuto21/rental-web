@@ -1,29 +1,27 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Search, Heart, User } from 'lucide-react';"use client"; // Obligatoire pour lire l'URL
+"use client";
 
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Search, Heart, User } from 'lucide-react';
 import AnimatedCarImage from './AnimatedCarImages';
 
-const servicesData = [
-  {
-    title: "Vehicule Reservation",
-    description: "With this app, a customer can book a vehicule, all type of vehicule : car, motorcyle, fly.",
-    imageUrl: "/service-car.png",
-  },
-  {
-    title: "Booking A Driver",
-    description: "With this app, a customer should be able to book a driver with a car when he can not drive it.",
-    imageUrl: "/service-driver.png",
-  },
-  {
-    title: "Management of a Vehicule Agency",
-    description: "With this app, when you have an agency, you can be our partner by sign in your agency to our platform.",
-    imageUrl: "/service-agency.png",
-  },
-];
-
 export default function Landings() {
+  const pathname = usePathname();
+
+  // 4. Si on est sur la page '/CarsPage', on ne n'affiche rien (on cache ce composant)
+  if (pathname === '/CarsPage') {
+    return null;
+  }
+  if (pathname === '/Agencies') {
+    return null;
+  }
+  if (pathname === '/Profil') {
+    return null;
+  }
+  if (pathname === '/Help') {
+    return null;
+  }
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -50,18 +48,18 @@ export default function Landings() {
 
         {/* Navigation */}
         <nav className="flex items-center gap-10">
-          <a href="#" className="text-[#2563EB] font-semibold hover:text-[#0611D7] transition-colors">
+          <Link href="/" className="text-[#2563EB] font-semibold hover:text-[#0611D7] transition-colors">
             Home
-          </a>
-          <a href="#featured-vehicles" className="text-gray-600 font-medium hover:text-[#0611D7] transition-colors">
+          </Link>
+          <Link href="/CarsPage" className="text-gray-600 font-medium hover:text-[#0611D7] transition-colors">
             Cars
-          </a>
-          <a href="#agencies" className="text-gray-600 font-medium hover:text-[#0611D7] transition-colors">
+          </Link>
+          <a href="/Agencies" className="text-gray-600 font-medium hover:text-[#0611D7] transition-colors">
             Agencies
           </a>
-          <a href="#footer" className="text-gray-600 font-medium hover:text-[#0611D7] transition-colors">
+          <Link href="/Help" className="text-gray-600 font-medium hover:text-[#0611D7] transition-colors">
             Help
-          </a>
+          </Link>
         </nav>
 
         {/* Icons */}
@@ -70,7 +68,12 @@ export default function Landings() {
             <Heart className="w-5 h-5 text-gray-600" />
           </button>
           <div className="w-10 h-10 bg-gray-200 rounded-full">
-            <User className="w-5 h-5 text-gray-600 m-2.5" />
+            <Link href="/Profil">
+              <button className="p-2.5">
+                <User className="w-5 h-5 text-gray-600" />
+              </button>
+
+            </Link>
           </div>
         </div>
       </header>
@@ -101,14 +104,12 @@ export default function Landings() {
             {/* Right Content - Car Image */}
             <div className="relative">
               <div className="relative z-20 transform transition-transform duration-500">
-                <AnimatedCarImage/>
+                <AnimatedCarImage />
               </div>
             </div>
           </div>
         </div>
       </section>
-
-           
     </div>
   );
 }

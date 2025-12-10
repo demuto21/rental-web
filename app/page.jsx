@@ -1,13 +1,9 @@
 import OurServices from '@/components/OurService';
 import QualityAgencies from "@/components/QualityAgencies";
 import Featuredvehicules from "@/components/FeaturedVehicules";
-import ReviewsPublics from '@/components/ReviewsPublics';
-import WhoAreWe from '@/components/WhoAreWe';
 import StatsSection from '@/components/StatsSection';
-import  {ReviewCard}  from '@/components/ReviewCard';
-import  {StatsCard}  from '@/components/StatsCard';
-import Testimonials from '@/components/Testimonials';
-
+import { ReviewCard } from '@/components/ReviewCard';
+import ReviewsPage from '@/components/Testimonials';
 
 export default function HomePage() {
   return (
@@ -15,11 +11,8 @@ export default function HomePage() {
       <OurServices />
       <QualityAgencies />
       <Featuredvehicules />
-      <WhoAreWe />
-      <ReviewsPublics />
+      <ReviewsPage />
       <ReviewCard />
-      <StatsCard />
-      <Testimonials />
       <StatsSection />
     </>
   );

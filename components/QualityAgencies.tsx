@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { HeartIcon, StarIcon, MapPinIcon, ClockIcon } from "./Icons";
+import Link from 'next/link';
+
 
 interface Agency {
   name: string;
@@ -148,7 +150,9 @@ export default function QualityAgencies() {
       </div>
 
       <div className="flex justify-center">
+        <Link href="/Agencies">
         <button className="bg-orange-500 hover:bg-orange-600 text-white text-lg font-semibold px-8 py-2 rounded-full">View More</button>
+      </Link>
       </div>
     </section>
   );

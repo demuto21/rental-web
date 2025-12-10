@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 const carImages = [
   '/assets/image.png',
   '/assets/car5.png',
-  '/assets/car6.png'
 ];
 
 

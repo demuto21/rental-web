@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Link from 'next/link'; // Import indispensable
+import Link from 'next/link';
 
 
-interface Vehicle {
+interface Vehicule {
   name: string;
   image: string;
   price: string;
@@ -15,7 +15,7 @@ interface Vehicle {
   rating: number;
 }
 
-const vehicles: Vehicle[] = [
+const vehicles: Vehicule[] = [
   {
     name: "Limousine alpha",
     image: "/assets/limousine.jpg",
