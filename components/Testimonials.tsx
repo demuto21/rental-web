@@ -201,8 +201,8 @@ const ReviewsParticuliers = () => {
   const reviews: Review[] = [
     {
       id: 1,
-      name: "Sophie Martin",
-      location: "Paris, France",
+      name: "Sophie Therese",
+      location: "Yaounde, Cameroun",
       rating: 5,
       comment: "Service exceptionnel ! La voiture était impeccable et la réservation s'est faite en quelques clics. L'équipe est très professionnelle et à l'écoute.",
       date: "15 Nov 2024",
@@ -211,8 +211,8 @@ const ReviewsParticuliers = () => {
     },
     {
       id: 2,
-      name: "Thomas Dubois",
-      location: "Lyon, France",
+      name: "Thomas Frank",
+      location: "Bafoussam, Cameroun",
       rating: 4,
       comment: "Très bonne expérience globale. Le véhicule était propre et en bon état. Petit bémol sur le délai de récupération, mais le service client a été réactif.",
       date: "10 Nov 2024",
@@ -221,8 +221,8 @@ const ReviewsParticuliers = () => {
     },
     {
       id: 3,
-      name: "Marie Lefebvre",
-      location: "Marseille, France",
+      name: "Marie Essono",
+      location: "Douala, Cameroun",
       rating: 5,
       comment: "Parfait pour un weekend ! Prix compétitifs et véhicule récent. J'ai particulièrement apprécié la flexibilité des horaires de restitution.",
       date: "5 Nov 2024",
@@ -231,8 +231,8 @@ const ReviewsParticuliers = () => {
     },
     {
       id: 4,
-      name: "Pierre Moreau",
-      location: "Toulouse, France",
+      name: "Pierre Atangana",
+      location: "Kribi, Cameroun",
       rating: 5,
       comment: "Excellent rapport qualité-prix. Le processus de location est simple et rapide. La voiture était exactement comme décrite. Service au top !",
       date: "1 Nov 2024",
@@ -294,7 +294,7 @@ const ReviewsPublics = () => {
     {
       id: 1,
       name: "TechCorp Solutions",
-      location: "Paris La Défense",
+      location: "Yaounde",
       rating: 5,
       comment: "Partenaire fiable pour notre flotte d'entreprise. Gestion professionnelle des contrats longue durée et service de maintenance impeccable.",
       date: "20 Nov 2024",
@@ -303,8 +303,8 @@ const ReviewsPublics = () => {
     },
     {
       id: 2,
-      name: "Consulting Group France",
-      location: "Lyon",
+      name: "Consulting Group",
+      location: "Douala",
       rating: 5,
       comment: "Excellent service B2B. Les véhicules sont toujours disponibles pour nos consultants en déplacement. Facturation claire et service dédié.",
       date: "18 Nov 2024",
@@ -314,7 +314,7 @@ const ReviewsPublics = () => {
     {
       id: 3,
       name: "BTP Construction",
-      location: "Nantes",
+      location: "Kribi",
       rating: 4,
       comment: "Bonne solution pour nos besoins ponctuels en véhicules utilitaires. Tarifs compétitifs pour les entreprises et large choix de véhicules adaptés.",
       date: "12 Nov 2024",
@@ -324,7 +324,7 @@ const ReviewsPublics = () => {
     {
       id: 4,
       name: "Services Logistiques Pro",
-      location: "Bordeaux",
+      location: "Bafoussam",
       rating: 5,
       comment: "Partenariat de confiance depuis 2 ans. La flexibilité des contrats et la qualité du service nous permettent de répondre aux besoins de nos clients.",
       date: "8 Nov 2024",
@@ -410,9 +410,9 @@ export default function ReviewsPage() {
               </div>
               <div>
                 <h1 className="text-3xl font-black bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent">
-                  EasyRent Reviews
+                  Easy-Rent Reviews
                 </h1>
-                <p className="text-gray-600 text-sm font-medium">✨ Votre avis compte pour nous</p>
+                <p className="text-gray-600 text-sm font-medium">Votre avis compte pour nous</p>
               </div>
             </div>
             

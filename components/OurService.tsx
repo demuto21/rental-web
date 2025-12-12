@@ -1,4 +1,3 @@
-// components/OurService.tsx
 "use client";
 
 import Image from 'next/image';
@@ -33,7 +32,7 @@ export default function OurServices() {
   ];
 
   return (
-    <section className="py-20 px-6 max-w-[1440px] mx-auto">
+    <section className="py-20 w-full">
       <div className="text-center mb-16">
         <span className="text-orange-500 font-bold tracking-wider text-sm uppercase">Nos Services</span>
         <h2 className="text-4xl md:text-5xl font-bold text-slate-800 mt-2">
@@ -61,13 +60,11 @@ export default function OurServices() {
                   className="object-contain w-full h-full drop-shadow-xl"
                 />
               </div>
-              {/* Badge Icon */}
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm p-3 rounded-xl shadow-sm">
                 <service.icon className={`w-6 h-6 ${service.color === 'orange' ? 'text-orange-500' : 'text-blue-600'}`} />
               </div>
             </div>
 
-            {/* Content */}
             <div className="px-4 pb-4 flex-1 flex flex-col">
               <h3 className="text-2xl font-bold text-slate-800 mb-3 group-hover:text-blue-600 transition-colors">
                 {service.title}

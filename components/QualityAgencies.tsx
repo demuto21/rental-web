@@ -4,61 +4,14 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { MapPin, Star, Clock, ArrowRight, Building2, CheckCircle } from "lucide-react";
-
-interface Agency {
-  name: string;
-  description: string;
-  logo: string;
-  location: string;
-  rating: number;
-  time?: string;
-  isOpen?: boolean;
-}
-
-const agencies: Agency[] = [
-  {
-    name: "Agence Prestige",
-    description: "Spécialiste des véhicules de luxe et de cérémonie.",
-    logo: "/assets/company-logo.jpg",
-    location: "Douala, Akwa",
-    rating: 4.8,
-    time: "08:00 - 20:00",
-    isOpen: true,
-  },
-  {
-    name: "Easy Drive",
-    description: "Location rapide pour particuliers et entreprises.",
-    logo: "/assets/agencies.png",
-    location: "Yaoundé, Bastos",
-    rating: 4.5,
-    time: "08:00 - 18:00",
-    isOpen: true,
-  },
-  {
-    name: "Kribi Beach Cars",
-    description: "Pour vos escapades touristiques au bord de la mer.",
-    logo: "/assets/company-logo.jpg",
-    location: "Kribi",
-    rating: 4.2,
-    time: "09:00 - 19:00",
-    isOpen: false,
-  },
-  {
-    name: "Business Fleet",
-    description: "Gestion de flotte professionnelle.",
-    logo: "/assets/agencies.png",
-    location: "Douala, Bonanjo",
-    rating: 4.9,
-    time: "07:30 - 17:30",
-    isOpen: true,
-  },
-];
+import { MapPin, Star, Clock, ArrowRight, CheckCircle, Building2 } from "lucide-react";
+import { allAgencies } from "@/modules/agenciesData"; // On utilise la vraie base de données
 
 export default function QualityAgencies() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  
   // On affiche 3 cartes sur desktop, donc on limite l'index max
-  const maxIndex = agencies.length - 1; 
+  const maxIndex = allAgencies.length > 0 ? allAgencies.length - 1 : 0;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -86,23 +39,27 @@ export default function QualityAgencies() {
       <div className="max-w-[1440px] mx-auto overflow-hidden px-4">
         <motion.div 
           className="flex gap-6"
-          animate={{ x: `-${currentIndex * 350}px` }} // Ajustement approximatif du scroll
+          animate={{ x: `-${currentIndex * 350}px` }} // Ajustement du scroll (largeur carte + gap)
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          {agencies.map((agency, i) => (
-            <div key={i} className="min-w-[320px] md:min-w-[380px] p-2">
+          {allAgencies.map((agency) => (
+            <div key={agency.id} className="min-w-[320px] md:min-w-[380px] p-2">
               <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group h-full flex flex-col">
                 
                 {/* Header Carte */}
                 <div className="flex justify-between items-start mb-6">
                   <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-slate-50 flex items-center justify-center">
-                    <Image 
-                      src={agency.logo} 
-                      alt={agency.name} 
-                      width={64} 
-                      height={64} 
-                      className="object-cover"
-                    />
+                    {agency.logo ? (
+                        <Image 
+                        src={agency.logo} 
+                        alt={agency.name} 
+                        width={64} 
+                        height={64} 
+                        className="object-cover"
+                        />
+                    ) : (
+                        <Building2 className="text-slate-300" />
+                    )}
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${agency.isOpen ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                     {agency.isOpen ? <CheckCircle size={12} /> : null}
@@ -123,7 +80,7 @@ export default function QualityAgencies() {
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center text-slate-600 gap-2">
                       <MapPin size={16} className="text-blue-500" />
-                      {agency.location}
+                      <span className="truncate max-w-[120px]">{agency.city}</span>
                     </div>
                     <div className="flex items-center gap-1 font-bold text-slate-700">
                       <Star size={16} className="text-orange-400 fill-orange-400" />
@@ -133,14 +90,16 @@ export default function QualityAgencies() {
                   
                   <div className="flex items-center text-slate-600 gap-2 text-sm">
                     <Clock size={16} className="text-orange-500" />
-                    {agency.time}
+                    {agency.openingHours}
                   </div>
                 </div>
 
-                {/* Bouton Voir */}
-                <button className="w-full mt-6 py-3 rounded-xl bg-slate-50 text-blue-600 font-bold text-sm hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2 group-hover:shadow-md">
-                  Visiter l'agence <ArrowRight size={16} />
-                </button>
+                {/* Bouton Voir - LIEN DYNAMIQUE AJOUTÉ */}
+                <Link href={`/Agencies/${agency.id}`}>
+                    <button className="w-full mt-6 py-3 rounded-xl bg-slate-50 text-blue-600 font-bold text-sm hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2 group-hover:shadow-md">
+                    Visiter l'agence <ArrowRight size={16} />
+                    </button>
+                </Link>
               </div>
             </div>
           ))}

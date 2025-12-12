@@ -1,19 +1,17 @@
-// modules/carsData.ts
-
 export interface Car {
-  id: string | number;
+  id: number;
   name: string;
   price: number;
   currency: string;
   type: string;
   fuel: string;
   seats: number;
-  transmission: string; // 1 = Manuelle, 2 = Auto
+  transmission: string; // "Manuelle" ou "Automatique"
   rating: number;
   reviewsCount: number;
   isFavorite: boolean;
-  image: string; // Image principale
-  gallery: string[]; // Galerie d'images
+  image: string;
+  gallery: string[];
   tag?: string;
   description: string;
   location: string;
@@ -49,7 +47,7 @@ export const allCars: Car[] = [
     reviewsCount: 12,
     isFavorite: true,
     tag: "Populaire",
-    image: "/assets/car2.jpeg", // Assurez-vous que ces images existent
+    image: "/assets/car2.jpeg", 
     gallery: ["/assets/car2.jpeg", "/assets/car1.jpeg", "/assets/car3.jpeg", "/assets/car4.jpeg"],
     description: "Une voiture sportive élégante, parfaite pour les mariages ou les week-ends de luxe. Confort absolu et puissance garantie.",
     location: "Yaoundé, Route de Kribi",
@@ -80,8 +78,8 @@ export const allCars: Car[] = [
     reviewsCount: 24,
     isFavorite: false,
     tag: "Familial",
-    image: "/assets/toyota.jpg",
-    gallery: ["/assets/toyota.jpg", "/assets/car6.png", "/assets/car5.png"],
+    image: "/assets/fortuner.jpg",
+    gallery: ["/assets/fortuner.jpg", "/assets/car6.png", "/assets/car5.png", "/assets/car3.jpeg"],
     description: "Le SUV parfait pour les routes camerounaises. Robuste, spacieux et sécurisé pour toute la famille.",
     location: "Douala, Bonapriso",
     specs: {
@@ -110,7 +108,7 @@ export const allCars: Car[] = [
     reviewsCount: 8,
     isFavorite: true,
     tag: "Premium",
-    image: "/assets/car6.png",
+    image: "/assets/mercedes gle.webp",
     gallery: ["/assets/car6.png", "/assets/limousine.jpg", "/assets/car2.jpeg"],
     description: "Le summum du luxe et de la technologie. Idéal pour les rendez-vous d'affaires.",
     location: "Yaoundé, Bastos",
@@ -125,5 +123,88 @@ export const allCars: Car[] = [
     },
     reviewsList: []
   },
-  // Ajoutez d'autres voitures ici avec la même structure...
+  {
+    id: 4,
+    name: "Limousine Alpha",
+    price: 200000,
+    currency: "CFA",
+    type: "Luxe",
+    fuel: "Essence",
+    seats: 8,
+    transmission: "Automatique",
+    rating: 5.0,
+    reviewsCount: 5,
+    isFavorite: true,
+    tag: "VIP",
+    image: "/assets/limousine.jpg",
+    gallery: ["/assets/limousine.jpg", "/assets/car1.jpeg"],
+    description: "Pour vos événements les plus prestigieux.",
+    location: "Douala, Akwa",
+    specs: {
+      modele: "Stretch Limo",
+      marque: "Lincoln",
+      capacite: "8 Personnes",
+      couleur: "Blanc",
+      kilometrage: "5 000 km",
+      vitesseMax: "180 Km/h",
+      portes: 4
+    },
+    reviewsList: []
+  },
+  {
+    id: 5,
+    name: "Moto Cross",
+    price: 25000,
+    currency: "CFA",
+    type: "Moto",
+    fuel: "Essence",
+    seats: 1,
+    transmission: "Manuelle",
+    rating: 4.0,
+    reviewsCount: 10,
+    isFavorite: false,
+    tag: "Aventure",
+    image: "/assets/motocross.jpeg",
+    gallery: ["/assets/motocross.jpeg"],
+    description: "Parfaite pour les terrains difficiles.",
+    location: "Bafoussam",
+    specs: {
+      modele: "Cross 250",
+      marque: "KTM",
+      capacite: "1 Personne",
+      couleur: "Orange",
+      kilometrage: "2 000 km",
+      vitesseMax: "140 Km/h",
+      portes: 0
+    },
+    reviewsList: []
+  },
+  {
+    id: 6,
+    name: "Quad Bike",
+    price: 40000,
+    currency: "CFA",
+    type: "Quad",
+    fuel: "Essence",
+    seats: 2,
+    transmission: "Automatique",
+    rating: 4.5,
+    reviewsCount: 15,
+    isFavorite: false,
+    tag: "Loisir",
+    image: "/assets/quad.png",
+    gallery: ["/assets/quad.png"],
+    description: "Pour des balades inoubliables en bord de mer.",
+    location: "Kribi",
+    specs: {
+      modele: "Raptor",
+      marque: "Yamaha",
+      capacite: "2 Personnes",
+      couleur: "Noir",
+      kilometrage: "1 500 km",
+      vitesseMax: "100 Km/h",
+      portes: 0
+    },
+    reviewsList: []
+  }
 ];

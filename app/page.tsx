@@ -1,4 +1,5 @@
-// app/page.tsx
+"use client";
+
 import OurServices from '@/components/OurService';
 import QualityAgencies from "@/components/QualityAgencies";
 import FeaturedVehicles from "@/components/FeaturedVehicules";
@@ -7,29 +8,27 @@ import ReviewsPage from '@/components/Testimonials';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col gap-24 pb-24">
-      {/* Nous n'avons pas besoin de marges en haut car le Hero (Landings) est géré dans layout.tsx */}
+    <div className="min-h-screen bg-slate-50 flex flex-col gap-0">
       
-      {/* Section Services avec fond blanc pour casser la monotonie */}
-      <div className="bg-white rounded-b-[3rem] shadow-sm border-b border-slate-100 pb-10">
-        <OurServices />
+      <div className="bg-white border-b border-slate-100">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+          <OurServices />
+        </div>
       </div>
 
-      {/* Section Agences */}
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full">
         <QualityAgencies />
       </div>
 
-      {/* Section Véhicules en vedette */}
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full">
         <FeaturedVehicles />
       </div>
 
-      {/* Stats Section (Full width) */}
-      <StatsSection />
+      <div className="w-full px-4 md:px-8 py-12">
+         <StatsSection />
+      </div>
 
-      {/* Témoignages */}
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full pb-24">
         <ReviewsPage />
       </div>
     </div>

@@ -4,30 +4,18 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { 
-  Home, 
-  LayoutGrid, 
-  Heart, 
-  DollarSign, 
-  Bell, 
-  Settings, 
-  LogOut, 
-  Search, 
-  Edit2,
-  ChevronDown,
-  Calendar,
-  Car,
-  Trash2,
-  User,
-  Mail,
-  MapPin
+  Home, LayoutGrid, Heart, DollarSign, Bell, Settings, LogOut, 
+  Search, Edit2, ChevronDown, Calendar, Car, Trash2, User, 
+  Mail, MapPin, Lock, Smartphone, CreditCard, BellRing, Globe, 
+  Moon, Shield, FileText, HelpCircle, ChevronRight, ArrowLeft, Sun, Monitor
 } from "lucide-react";
 
 // --- DONNÉES FACTICES ---
 
 const mockNotifications = [
-    { id: 1, title: "Réservation confirmée", content: "Votre réservation pour la Mercedes GLE 450 a été confirmée par l'agence.", date: "Aujourd'hui, 10:30", type: "success" },
-    { id: 2, title: "Rappel de paiement", content: "N'oubliez pas de régler le solde de votre location avant le 15 juin.", date: "Hier, 14:00", type: "warning" },
-    { id: 3, title: "Nouvelle offre", content: "-20% sur toutes les locations à Kribi ce week-end !", date: "08 Juin, 09:00", type: "info" },
+    { id: 1, title: "Réservation confirmée", content: "Votre réservation pour la Mercedes GLE 450 a été confirmée.", date: "Aujourd'hui, 10:30", type: "success" },
+    { id: 2, title: "Rappel de paiement", content: "N'oubliez pas de régler le solde avant le 15 juin.", date: "Hier, 14:00", type: "warning" },
+    { id: 3, title: "Nouvelle offre", content: "-20% sur toutes les locations à Kribi !", date: "08 Juin, 09:00", type: "info" },
 ];
 
 const mockTransactions = [
@@ -46,15 +34,12 @@ const mockFavorites = [
 
 const InformationView = () => (
     <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        {/* Banner */}
         <div className="h-32 bg-gradient-to-r from-blue-600 to-blue-500 w-full relative">
             <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md p-2 rounded-full cursor-pointer hover:bg-white/30 transition">
                 <Edit2 className="text-white w-4 h-4" />
             </div>
         </div>
-        
         <div className="px-8 pb-8 relative">
-            {/* Avatar & Header */}
             <div className="flex flex-col md:flex-row justify-between items-end -mt-12 mb-10 gap-4">
                 <div className="flex items-end gap-6">
                     <div className="relative">
@@ -74,20 +59,16 @@ const InformationView = () => (
                     Sauvegarder
                 </button>
             </div>
-
-            {/* Formulaire */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                     <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2">Informations Personnelles</h3>
-                    
                     <div>
                         <label className="block text-slate-600 text-sm font-medium mb-2">Nom Complet</label>
                         <div className="relative">
                             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                            <input type="text" defaultValue="Serge Kenfack" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                            <input type="text" defaultValue="Serge Kenfack" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
                         </div>
                     </div>
-
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-slate-600 text-sm font-medium mb-2">Genre</label>
@@ -111,23 +92,20 @@ const InformationView = () => (
                         </div>
                     </div>
                 </div>
-
                 <div className="space-y-6">
                     <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2">Coordonnées</h3>
-                    
                     <div>
                         <label className="block text-slate-600 text-sm font-medium mb-2">Email</label>
                         <div className="relative">
                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                            <input type="email" defaultValue="serge.kenfack@email.com" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                            <input type="email" defaultValue="serge.kenfack@email.com" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
                         </div>
                     </div>
-
                     <div>
                         <label className="block text-slate-600 text-sm font-medium mb-2">Adresse</label>
                         <div className="relative">
                             <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                            <input type="text" defaultValue="Yaoundé, Cameroun" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                            <input type="text" defaultValue="Yaoundé, Cameroun" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-slate-700 outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
                         </div>
                     </div>
                 </div>
@@ -147,11 +125,8 @@ const FavoriteView = () => (
                         <button className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full text-red-500 shadow-sm hover:bg-red-50 transition">
                             <Heart className="fill-current w-5 h-5" />
                         </button>
-                        <span className="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">
-                            {car.type}
-                        </span>
+                        <span className="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">{car.type}</span>
                     </div>
-                    
                     <div className="px-2">
                         <div className="flex justify-between items-start mb-2">
                             <h3 className="text-lg font-bold text-slate-800">{car.name}</h3>
@@ -160,20 +135,13 @@ const FavoriteView = () => (
                                 <span className="text-orange-400">★</span>
                             </div>
                         </div>
-                        
                         <p className="text-slate-500 text-sm mb-4">À partir de <span className="text-blue-600 font-bold text-lg">{car.price} FCFA</span>/jour</p>
-                        
-                        <button className="w-full bg-blue-600 text-white rounded-xl py-3 font-semibold hover:bg-blue-700 transition shadow-md hover:shadow-lg">
-                            Louer maintenant
-                        </button>
+                        <button className="w-full bg-blue-600 text-white rounded-xl py-3 font-semibold hover:bg-blue-700 transition shadow-md hover:shadow-lg">Louer maintenant</button>
                     </div>
                 </div>
             ))}
-            
             <div className="border-2 border-dashed border-slate-200 rounded-3xl p-4 flex flex-col items-center justify-center text-slate-400 bg-slate-50/50 min-h-[350px] hover:border-blue-300 hover:bg-blue-50/30 transition cursor-pointer">
-                <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                    <Search className="w-8 h-8 text-slate-300" />
-                </div>
+                <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4"><Search className="w-8 h-8 text-slate-300" /></div>
                 <p className="font-medium">Explorer plus de véhicules</p>
             </div>
         </div>
@@ -186,17 +154,10 @@ const NotificationsView = () => (
             <h2 className="text-2xl font-bold text-slate-800">Notifications</h2>
             <button className="text-sm text-blue-600 font-semibold hover:underline">Tout marquer comme lu</button>
         </div>
-
         <div className="space-y-4">
             {mockNotifications.map((notif) => (
                 <div key={notif.id} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100 group">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 
-                        ${notif.type === 'success' ? 'bg-green-100 text-green-600' : ''}
-                        ${notif.type === 'warning' ? 'bg-orange-100 text-orange-600' : ''}
-                        ${notif.type === 'info' ? 'bg-blue-100 text-blue-600' : ''}
-                    `}>
-                        <Bell className="w-6 h-6" />
-                    </div>
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${notif.type === 'success' ? 'bg-green-100 text-green-600' : ''} ${notif.type === 'warning' ? 'bg-orange-100 text-orange-600' : ''} ${notif.type === 'info' ? 'bg-blue-100 text-blue-600' : ''}`}><Bell className="w-6 h-6" /></div>
                     <div className="flex-1">
                         <div className="flex justify-between items-start mb-1">
                             <h3 className="font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{notif.title}</h3>
@@ -204,9 +165,7 @@ const NotificationsView = () => (
                         </div>
                         <p className="text-slate-600 text-sm leading-relaxed">{notif.content}</p>
                     </div>
-                    <button className="text-slate-300 hover:text-red-500 transition p-2 opacity-0 group-hover:opacity-100">
-                        <Trash2 className="w-5 h-5" />
-                    </button>
+                    <button className="text-slate-300 hover:text-red-500 transition p-2 opacity-0 group-hover:opacity-100"><Trash2 className="w-5 h-5" /></button>
                 </div>
             ))}
         </div>
@@ -223,9 +182,7 @@ const TransactionsView = ({ type }: { type: 'locations' | 'payments' }) => (
                     { label: "Total Locations", value: "12", icon: Calendar, color: "bg-orange-500" },
                 ].map((stat, i) => (
                     <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md ${stat.color}`}>
-                            <stat.icon size={24} />
-                        </div>
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md ${stat.color}`}><stat.icon size={24} /></div>
                         <div>
                             <p className="text-slate-500 text-sm font-medium">{stat.label}</p>
                             <p className="text-2xl font-bold text-slate-800">{stat.value}</p>
@@ -234,23 +191,17 @@ const TransactionsView = ({ type }: { type: 'locations' | 'payments' }) => (
                 ))}
             </div>
         )}
-
         <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
             <div className="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
-                <h3 className="font-bold text-xl text-slate-800">
-                    {type === 'locations' ? 'Historique des Locations' : 'Historique des Paiements'}
-                </h3>
+                <h3 className="font-bold text-xl text-slate-800">{type === 'locations' ? 'Historique des Locations' : 'Historique des Paiements'}</h3>
                 <div className="flex gap-3">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                         <input type="text" placeholder="Rechercher..." className="bg-slate-50 border border-slate-200 pl-10 pr-4 py-2 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-100 w-48" />
                     </div>
-                    <button className="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 text-sm font-medium text-slate-600 hover:bg-slate-100">
-                        <Calendar className="w-4 h-4" /> 2023 <ChevronDown className="w-4 h-4" />
-                    </button>
+                    <button className="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 text-sm font-medium text-slate-600 hover:bg-slate-100"><Calendar className="w-4 h-4" /> 2023 <ChevronDown className="w-4 h-4" /></button>
                 </div>
             </div>
-
             <div className="overflow-x-auto">
                 <table className="w-full text-left">
                     <thead className="bg-slate-50 border-b border-slate-100">
@@ -267,43 +218,24 @@ const TransactionsView = ({ type }: { type: 'locations' | 'payments' }) => (
                             <tr key={i} className="hover:bg-blue-50/30 transition-colors">
                                 <td className="py-4 px-6">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0">
-                                            <Image src="/assets/car2.jpeg" width={48} height={48} alt="car" className="object-cover h-full w-full" />
-                                        </div>
-                                        <div>
-                                            <p className="font-bold text-slate-800">{item.car}</p>
-                                            <p className="text-xs text-slate-400 font-mono bg-slate-100 px-1.5 py-0.5 rounded inline-block mt-1">{item.plate}</p>
-                                        </div>
+                                        <div className="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden flex-shrink-0"><Image src="/assets/car2.jpeg" width={48} height={48} alt="car" className="object-cover h-full w-full" /></div>
+                                        <div><p className="font-bold text-slate-800">{item.car}</p><p className="text-xs text-slate-400 font-mono bg-slate-100 px-1.5 py-0.5 rounded inline-block mt-1">{item.plate}</p></div>
                                     </div>
                                 </td>
                                 <td className="py-4 px-6 hidden md:table-cell">
                                     <div className="flex items-center gap-2">
-                                        <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
-                                            {item.provider[0]}
-                                        </div>
+                                        <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">{item.provider[0]}</div>
                                         <span className="text-slate-600 text-sm font-medium">{item.provider}</span>
                                     </div>
                                 </td>
+                                <td className="py-4 px-6"><p className="text-slate-700 font-medium text-sm">{item.period}</p></td>
                                 <td className="py-4 px-6">
-                                    <p className="text-slate-700 font-medium text-sm">{item.period}</p>
-                                </td>
-                                <td className="py-4 px-6">
-                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold
-                                        ${item.status === 'Terminé' ? 'bg-green-100 text-green-700' : ''}
-                                        ${item.status === 'En cours' ? 'bg-blue-100 text-blue-700' : ''}
-                                        ${item.status === 'Annulé' ? 'bg-red-100 text-red-700' : ''}
-                                    `}>
-                                        <span className={`w-1.5 h-1.5 rounded-full 
-                                            ${item.status === 'Terminé' ? 'bg-green-500' : ''}
-                                            ${item.status === 'En cours' ? 'bg-blue-500' : ''}
-                                            ${item.status === 'Annulé' ? 'bg-red-500' : ''}
-                                        `}></span>
+                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${item.status === 'Terminé' ? 'bg-green-100 text-green-700' : ''} ${item.status === 'En cours' ? 'bg-blue-100 text-blue-700' : ''} ${item.status === 'Annulé' ? 'bg-red-100 text-red-700' : ''}`}>
+                                        <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'Terminé' ? 'bg-green-500' : ''} ${item.status === 'En cours' ? 'bg-blue-500' : ''} ${item.status === 'Annulé' ? 'bg-red-500' : ''}`}></span>
                                         {item.status}
                                     </span>
                                 </td>
-                                <td className="py-4 px-6 text-right">
-                                    <span className="font-bold text-slate-800">{item.amount}</span>
-                                </td>
+                                <td className="py-4 px-6 text-right"><span className="font-bold text-slate-800">{item.amount}</span></td>
                             </tr>
                         ))}
                     </tbody>
@@ -313,10 +245,204 @@ const TransactionsView = ({ type }: { type: 'locations' | 'payments' }) => (
     </div>
 );
 
-// --- COMPOSANT PAGE PRINCIPAL ---
+// --- COMPOSANTS DE FORMULAIRES PARAMÈTRES ---
+
+const SettingsHeader = ({ title, onBack }: { title: string, onBack: () => void }) => (
+    <div className="flex items-center gap-4 mb-8">
+        <button onClick={onBack} className="p-2 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition">
+            <ArrowLeft className="w-5 h-5 text-slate-600" />
+        </button>
+        <h2 className="text-2xl font-bold text-slate-800">{title}</h2>
+    </div>
+);
+
+// Formulaire Apparence (Thème)
+const ThemeForm = ({ onBack }: any) => (
+    <div className="max-w-2xl">
+        <SettingsHeader title="Apparence" onBack={onBack} />
+        <div className="bg-white p-8 rounded-3xl border border-slate-100 space-y-4">
+            {[
+                { label: 'Thème clair', icon: Sun },
+                { label: 'Thème sombre', icon: Moon },
+                { label: 'Système', icon: Monitor }
+            ].map((theme, i) => (
+                 <label key={i} className="flex items-center justify-between p-4 border border-slate-200 rounded-2xl cursor-pointer hover:border-blue-500 hover:bg-slate-50 transition-all group">
+                    <div className="flex items-center gap-3">
+                        <theme.icon className="text-slate-500 group-hover:text-blue-600" />
+                        <span className="font-medium text-slate-700">{theme.label}</span>
+                    </div>
+                    <input type="radio" name="theme" className="accent-blue-600 w-5 h-5" defaultChecked={i === 0} />
+                 </label>
+            ))}
+            <button className="w-full mt-4 bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition">Appliquer</button>
+        </div>
+    </div>
+);
+
+// Formulaire Langue
+const LanguageForm = ({ onBack }: any) => (
+    <div className="max-w-2xl">
+        <SettingsHeader title="Langue & Région" onBack={onBack} />
+        <div className="bg-white p-8 rounded-3xl border border-slate-100 space-y-6">
+            <div>
+                <label className="block text-slate-700 font-medium mb-2">Langue de l'application</label>
+                <div className="relative">
+                    <select className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 appearance-none text-slate-700">
+                        <option>Français (Cameroun)</option>
+                        <option>English (US)</option>
+                        <option>Français (Cameroun)</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
+                </div>
+            </div>
+             <div>
+                <label className="block text-slate-700 font-medium mb-2">Format de date</label>
+                <div className="relative">
+                    <select className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 appearance-none text-slate-700">
+                        <option>JJ/MM/AAAA</option>
+                        <option>MM/JJ/AAAA</option>
+                        <option>AAAA-MM-JJ</option>
+                    </select>
+                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
+                </div>
+            </div>
+            <button className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">Enregistrer</button>
+        </div>
+    </div>
+);
+
+const PasswordForm = ({ onBack }: any) => (
+    <div className="max-w-2xl">
+        <SettingsHeader title="Modifier le mot de passe" onBack={onBack} />
+        <div className="bg-white p-8 rounded-3xl border border-slate-100 space-y-6">
+            <div>
+                <label className="block text-slate-700 font-medium mb-2">Mot de passe actuel</label>
+                <input type="password" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+                <label className="block text-slate-700 font-medium mb-2">Nouveau mot de passe</label>
+                <input type="password" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+                <label className="block text-slate-700 font-medium mb-2">Confirmer le mot de passe</label>
+                <input type="password" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <button className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition">Mettre à jour</button>
+        </div>
+    </div>
+);
+
+const NotificationsForm = ({ onBack }: any) => (
+    <div className="max-w-2xl">
+        <SettingsHeader title="Préférences de notifications" onBack={onBack} />
+        <div className="bg-white p-8 rounded-3xl border border-slate-100 space-y-6">
+            {['Notifications Email', 'Notifications SMS', 'Offres promotionnelles', 'Mises à jour de sécurité'].map((item, i) => (
+                <div key={i} className="flex items-center justify-between py-2">
+                    <span className="text-slate-700 font-medium">{item}</span>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="sr-only peer" defaultChecked={i < 2} />
+                        <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                </div>
+            ))}
+            <button className="w-full mt-4 bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition">Enregistrer les préférences</button>
+        </div>
+    </div>
+);
+
+const PaymentForm = ({ onBack }: any) => (
+    <div className="max-w-2xl">
+        <SettingsHeader title="Méthodes de paiement" onBack={onBack} />
+        <div className="space-y-4">
+            <div className="bg-white p-6 rounded-2xl border border-slate-100 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-8 bg-blue-900 rounded-md"></div>
+                    <div>
+                        <p className="font-bold text-slate-800">Visa terminant par 4242</p>
+                        <p className="text-xs text-slate-500">Expire le 12/25</p>
+                    </div>
+                </div>
+                <button className="text-red-500 text-sm font-bold hover:underline">Retirer</button>
+            </div>
+            <button className="w-full border-2 border-dashed border-slate-300 rounded-2xl p-4 text-slate-500 font-bold hover:border-blue-500 hover:text-blue-600 transition flex items-center justify-center gap-2">
+                <CreditCard size={20} /> Ajouter une nouvelle carte
+            </button>
+        </div>
+    </div>
+);
+
+// --- VUE PRINCIPALE DES PARAMÈTRES ---
+
+const SettingsView = () => {
+    const [subView, setSubView] = useState('main'); // 'main', 'password', 'notifications', 'payment', 'theme', 'language'
+
+    const SettingsItem = ({ icon: Icon, title, subtitle, onClick, color = "text-slate-600" }: any) => (
+        <div onClick={onClick} className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors cursor-pointer border-b border-slate-100 last:border-0 group">
+            <div className="flex items-start gap-4">
+                <div className="p-2.5 bg-slate-100 rounded-xl group-hover:bg-white group-hover:shadow-sm transition-all">
+                    <Icon className={`w-5 h-5 ${color}`} />
+                </div>
+                <div>
+                    <h3 className="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{title}</h3>
+                    <p className="text-xs text-slate-500 mt-0.5">{subtitle}</p>
+                </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-blue-500 transition-colors" />
+        </div>
+    );
+
+    const Section = ({ title, children }: any) => (
+        <div className="mb-8">
+            <h2 className="text-lg font-bold text-slate-800 mb-4 px-1">{title}</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">{children}</div>
+        </div>
+    );
+
+    if (subView === 'password') return <PasswordForm onBack={() => setSubView('main')} />;
+    if (subView === 'notifications') return <NotificationsForm onBack={() => setSubView('main')} />;
+    if (subView === 'payment') return <PaymentForm onBack={() => setSubView('main')} />;
+    if (subView === 'theme') return <ThemeForm onBack={() => setSubView('main')} />;
+    if (subView === 'language') return <LanguageForm onBack={() => setSubView('main')} />;
+
+    return (
+        <div className="max-w-4xl">
+            <header className="mb-10">
+                <h1 className="text-3xl font-bold text-slate-900">Paramètres</h1>
+                <p className="text-slate-500 mt-1">Gérez vos préférences et la sécurité de votre compte.</p>
+            </header>
+
+            <Section title="Compte & Sécurité">
+                <SettingsItem icon={Lock} title="Mot de passe" subtitle="Modifiez votre mot de passe." color="text-blue-600" onClick={() => setSubView('password')} />
+                <SettingsItem icon={CreditCard} title="Paiements" subtitle="Gérez vos cartes bancaires." color="text-green-600" onClick={() => setSubView('payment')} />
+                <SettingsItem icon={Smartphone} title="Authentification à deux facteurs" subtitle="Sécurité renforcée." color="text-purple-600" onClick={() => {}} />
+            </Section>
+
+            <Section title="Préférences">
+                <SettingsItem icon={BellRing} title="Notifications" subtitle="Emails et alertes." color="text-orange-500" onClick={() => setSubView('notifications')} />
+                <SettingsItem icon={Globe} title="Langue & Région" subtitle="Français (Cameroun)" color="text-blue-400" onClick={() => setSubView('language')} />
+                <SettingsItem icon={Moon} title="Apparence" subtitle="Thème clair activé" color="text-slate-700" onClick={() => setSubView('theme')} />
+            </Section>
+
+            <Section title="Légal & Support">
+                <SettingsItem icon={Shield} title="Politique de Confidentialité" subtitle="Contrôlez vos données." color="text-emerald-600" onClick={() => {}} />
+                <SettingsItem icon={FileText} title="Conditions d'utilisation" subtitle="Règles de la plateforme." color="text-blue-600" onClick={() => {}} />
+                <Link href="/Help"><SettingsItem icon={HelpCircle} title="Aide & Support" subtitle="Contactez notre équipe." color="text-red-500" onClick={() => {}} /></Link>
+            </Section>
+
+            <div className="mt-12 pt-8 border-t border-slate-200">
+                <h2 className="text-red-600 font-bold mb-4">Zone de danger</h2>
+                <button className="text-red-600 border border-red-200 bg-red-50 hover:bg-red-100 hover:border-red-300 font-bold py-3 px-6 rounded-xl transition-all text-sm flex items-center gap-2">
+                    <Trash2 size={16} /> Supprimer mon compte
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// --- PAGE PRINCIPALE ---
 
 export default function ProfilePage() {
-    const [activeTab, setActiveTab] = useState<"info" | "home" | "favorite" | "transactions" | "notifications">("info");
+    const [activeTab, setActiveTab] = useState<"info" | "home" | "favorite" | "transactions" | "notifications" | "settings">("info");
 
     const menuItems = [
         { id: "home", label: "Tableau de bord", icon: LayoutGrid },
@@ -333,111 +459,70 @@ export default function ProfilePage() {
             case "favorite": return <FavoriteView />;
             case "transactions": return <TransactionsView type="payments" />;
             case "notifications": return <NotificationsView />;
+            case "settings": return <SettingsView />;
             default: return <InformationView />;
         }
     };
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans flex flex-col">
-            
-            {/* ======================================= */}
-            {/* === NAVBAR GLOBALE (AJOUTÉE) === */}
-            {/* ======================================= */}
             <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 px-6 md:px-12 py-4">
                 <div className="flex items-center justify-between max-w-[1440px] mx-auto">
-                    {/* Logo */}
                     <Link href="/" className="text-2xl font-bold flex items-center gap-1">
-                        <div className="bg-blue-600 text-white p-1 rounded-lg">
-                            <Car size={24} />
-                        </div>
-                        <span className="text-blue-600">EASY</span>
-                        <span className="text-orange-500">-RENT</span>
+                        <div className="bg-blue-600 text-white p-1 rounded-lg"><Car size={24} /></div>
+                        <span className="text-blue-600">EASY</span><span className="text-orange-500">-RENT</span>
                     </Link>
-
-                    {/* Navigation */}
                     <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
                         <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
                         <Link href="/CarsPage" className="hover:text-blue-600 transition-colors">Cars</Link>
                         <Link href="/Agencies" className="hover:text-blue-600 transition-colors">Agencies</Link>
                         <Link href="/Help" className="hover:text-blue-600 transition-colors">Help</Link>
                     </nav>
-
-                    {/* Actions */}
                     <div className="flex gap-4 items-center pl-4 border-l border-slate-200 ml-4">
-                        <button className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition">
-                            <Heart size={20} />
-                        </button>
-                        <div className="w-9 h-9 bg-gradient-to-tr from-orange-400 to-orange-600 rounded-full border-2 border-white shadow-sm overflow-hidden">
-                            <Image src="/assets/default-avatar.jpeg" alt="User" width={36} height={36} className="object-cover w-full h-full" />
-                        </div>
+                        <button className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"><Heart size={20} /></button>
+                        <div className="w-9 h-9 bg-gradient-to-tr from-orange-400 to-orange-600 rounded-full border-2 border-white shadow-sm overflow-hidden"><Image src="/assets/default-avatar.jpeg" alt="User" width={36} height={36} className="object-cover w-full h-full" /></div>
                     </div>
                 </div>
             </header>
 
-            {/* ======================================= */}
-            {/* === CONTENU PRINCIPAL + SIDEBAR === */}
-            {/* ======================================= */}
             <div className="flex flex-1 items-start max-w-[1440px] mx-auto w-full">
-                
-                {/* --- SIDEBAR FIXE (Sous la Navbar) --- */}
                 <aside className="w-full md:w-72 bg-white flex flex-col py-8 border-r border-slate-200 sticky top-20 h-[calc(100vh-80px)] hidden md:flex flex-shrink-0 rounded-br-3xl">
                     <div className="px-6 mb-4">
                         <p className="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Menu Principal</p>
                         <nav className="space-y-1">
                             {menuItems.map((item) => (
-                                <button 
-                                    key={item.id}
-                                    onClick={() => setActiveTab(item.id as any)} 
-                                    className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200
-                                        ${activeTab === item.id 
-                                            ? 'bg-blue-50 text-blue-600 shadow-sm' 
-                                            : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
-                                        }`}
-                                >
-                                    <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-blue-600' : 'text-slate-400'}`} /> 
-                                    {item.label}
+                                <button key={item.id} onClick={() => setActiveTab(item.id as any)} className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${activeTab === item.id ? 'bg-blue-50 text-blue-600 shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+                                    <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-blue-600' : 'text-slate-400'}`} /> {item.label}
                                 </button>
                             ))}
                         </nav>
                     </div>
-
                     <div className="mt-auto px-6 pt-4 border-t border-slate-100">
                         <p className="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Autres</p>
                         <nav className="space-y-1">
-                            <button className="flex items-center gap-3 w-full px-4 py-3 text-slate-500 hover:bg-slate-50 rounded-xl text-sm font-medium transition-colors">
-                                <Settings className="w-5 h-5 text-slate-400" /> Paramètres
+                            <button onClick={() => setActiveTab("settings")} className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'settings' ? 'bg-blue-50 text-blue-600 shadow-sm' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}>
+                                <Settings className={`w-5 h-5 ${activeTab === 'settings' ? 'text-blue-600' : 'text-slate-400'}`} /> Paramètres
                             </button>
-                            <button className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl text-sm font-medium transition-colors">
-                                <LogOut className="w-5 h-5" /> Déconnexion
-                            </button>
+                            <button className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl text-sm font-medium transition-colors"><LogOut className="w-5 h-5" /> Déconnexion</button>
                         </nav>
                     </div>
                 </aside>
 
-                {/* --- MOBILE NAV --- */}
                 <div className="md:hidden bg-white p-4 flex justify-between items-center sticky top-20 z-40 border-b border-slate-200 w-full">
                     <span className="font-bold text-slate-700">Menu Profil</span>
-                    <button className="p-2 bg-slate-100 rounded-lg">
-                        <LayoutGrid size={24} className="text-slate-600" />
-                    </button>
+                    <button className="p-2 bg-slate-100 rounded-lg"><LayoutGrid size={24} className="text-slate-600" /></button>
                 </div>
 
-                {/* --- MAIN CONTENT AREA --- */}
                 <main className="flex-1 p-6 md:p-10 w-full">
-                    {/* Page Header (Breadcrumb style) */}
                     <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
                         <div>
                             <h1 className="text-3xl font-bold text-slate-900">Mon Espace</h1>
-                            <p className="text-slate-500 mt-1 flex items-center gap-2">
-                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                                Compte actif • Connecté en tant que Serge
-                            </p>
+                            <p className="text-slate-500 mt-1 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500"></span> Compte actif • Connecté</p>
                         </div>
-
                         <div className="flex items-center gap-4 w-full md:w-auto">
                             <div className="relative flex-1 md:w-64">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                                <input type="text" placeholder="Rechercher dans l'espace..." className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-blue-100 shadow-sm" />
+                                <input type="text" placeholder="Rechercher..." className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm outline-none focus:ring-2 focus:ring-blue-100 shadow-sm" />
                             </div>
                             <button className="relative p-2.5 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition shadow-sm">
                                 <Bell className="w-5 h-5 text-slate-600" />
@@ -445,11 +530,7 @@ export default function ProfilePage() {
                             </button>
                         </div>
                     </header>
-
-                    {/* Dynamic Content */}
-                    <div className="max-w-6xl mx-auto animate-fadeIn">
-                        {renderContent()}
-                    </div>
+                    <div className="max-w-6xl mx-auto animate-fadeIn">{renderContent()}</div>
                 </main>
             </div>
         </div>
