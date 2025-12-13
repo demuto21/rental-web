@@ -62,11 +62,11 @@ const TicketForm = ({ onBack, onSubmit }: { onBack: () => void, onSubmit: () => 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Votre Nom</label>
-                    <input type="text" placeholder="Serge Kenfack" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all" required />
+                    <input type="text" placeholder="Jean Dupont" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all" required />
                 </div>
                 <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Email de contact</label>
-                    <input type="email" placeholder="serge.kenfack@exemple.com" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all" required />
+                    <input type="email" placeholder="jean@exemple.com" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all" required />
                 </div>
             </div>
 
@@ -137,7 +137,7 @@ const SuccessView = ({ onReset }: { onReset: () => void }) => (
 export default function HelpPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
-  const [view, setView] = useState<'main' | 'form' | 'success'>('main'); // Gestion de l'état de la vue
+  const [view, setView] = useState<'main' | 'form' | 'success'>('main');
 
   const categories = [
     { id: 'all', name: 'Tout', icon: HelpCircle },
@@ -156,9 +156,16 @@ export default function HelpPage() {
     { title: 'Politique de remboursement', category: 'billing', views: '620' },
   ];
 
-  const filteredTopics = activeCategory === 'all' 
-    ? helpTopics 
-    : helpTopics.filter(topic => topic.category === activeCategory);
+  // --- FILTRAGE AMÉLIORÉ ---
+  const filteredTopics = helpTopics.filter(topic => {
+    // Vérifier si la catégorie correspond (ou si 'all' est sélectionné)
+    const matchesCategory = activeCategory === 'all' || topic.category === activeCategory;
+    
+    // Vérifier si le titre contient la recherche (insensible à la casse)
+    const matchesSearch = topic.title.toLowerCase().includes(searchQuery.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
@@ -178,7 +185,7 @@ export default function HelpPage() {
           </nav>
           <div className="flex gap-4 items-center pl-4 border-l border-slate-200 ml-4">
             <button className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"><Heart size={20} /></button>
-            <button className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition text-slate-600"><Settings size={20} /></button>
+            <Link href="/Profil"><button className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition text-slate-600"><Settings size={20} /></button></Link>
             <div className="w-9 h-9 bg-gradient-to-tr from-orange-400 to-orange-600 rounded-full border-2 border-white shadow-sm"></div>
           </div>
         </div>
@@ -195,7 +202,13 @@ export default function HelpPage() {
             <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">Recherchez des réponses à vos questions, parcourez la documentation ou contactez notre équipe support.</p>
             <div className="relative max-w-2xl mx-auto">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none"><Search className="h-6 w-6 text-slate-400" /></div>
-                <input type="text" className="block w-full pl-14 pr-6 py-5 rounded-2xl border-none shadow-2xl text-slate-900 placeholder:text-slate-400 focus:ring-4 focus:ring-blue-400/50 text-lg" placeholder="Rechercher un problème, une question..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                <input 
+                    type="text" 
+                    className="block w-full pl-14 pr-6 py-5 rounded-2xl border-none shadow-2xl text-slate-900 placeholder:text-slate-400 focus:ring-4 focus:ring-blue-400/50 text-lg" 
+                    placeholder="Rechercher un problème, une question..." 
+                    value={searchQuery} 
+                    onChange={(e) => setSearchQuery(e.target.value)} 
+                />
             </div>
             </div>
         </section>
@@ -230,27 +243,35 @@ export default function HelpPage() {
 
                     <div className="lg:col-span-9 space-y-8">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-2xl font-bold text-slate-800">Sujets Populaires</h2>
+                            <h2 className="text-2xl font-bold text-slate-800">
+                                {searchQuery ? `Résultats pour "${searchQuery}"` : 'Sujets Populaires'}
+                            </h2>
                             <button className="text-blue-600 text-sm font-bold hover:underline">Voir tout</button>
                         </div>
                         <div className="space-y-4">
-                            {filteredTopics.map((topic, index) => <FaqItem key={index} {...topic} />)}
+                            {filteredTopics.length > 0 ? (
+                                filteredTopics.map((topic, index) => <FaqItem key={index} {...topic} />)
+                            ) : (
+                                <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-200">
+                                    <p className="text-slate-400 font-medium">Aucun résultat trouvé pour votre recherche.</p>
+                                </div>
+                            )}
                         </div>
 
                         {/* CTA Box avec Bouton Actif */}
-                        <div className="mt-12 bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-10 text-center relative overflow-hidden shadow-xl">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+                        <div className="mt-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-3xl p-10 text-center relative overflow-hidden shadow-xl">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
                             <div className="relative z-10">
                                 <h3 className="text-2xl font-bold text-white mb-4">Vous ne trouvez pas votre réponse ?</h3>
-                                <p className="text-slate-400 mb-8 max-w-lg mx-auto">Notre équipe est disponible 24h/24 et 7j/7 pour vous aider à résoudre vos problèmes.</p>
+                                <p className="text-blue-100 mb-8 max-w-lg mx-auto">Notre équipe est disponible 24h/24 et 7j/7 pour vous aider.</p>
                                 <div className="flex justify-center gap-4">
                                 <button 
-                                    onClick={() => setView('form')} // Ouvre le formulaire
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-blue-600/25"
+                                    onClick={() => setView('form')}
+                                    className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-xl font-bold transition-all shadow-lg"
                                 >
                                     Ouvrir un ticket
                                 </button>
-                                <button className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-3 rounded-xl font-bold transition-all backdrop-blur-sm">
+                                <button className="bg-blue-800/50 hover:bg-blue-800 text-white border border-blue-400/30 px-8 py-3 rounded-xl font-bold transition-all backdrop-blur-sm">
                                     Consulter le Forum
                                 </button>
                                 </div>

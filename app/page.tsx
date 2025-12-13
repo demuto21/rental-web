@@ -8,28 +8,41 @@ import ReviewsPage from '@/components/Testimonials';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col gap-0">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-12">
+      {/* Services */}
+      <div className="bg-white border-b border-slate-100 section-compact">
+        <div className="container-compact">
           <OurServices />
         </div>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full">
-        <QualityAgencies />
+      {/* Agences */}
+      <div className="section-compact">
+        <div className="container-compact">
+          <QualityAgencies />
+        </div>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full">
-        <FeaturedVehicles />
+      {/* Véhicules */}
+      <div className="section-compact">
+        <div className="container-compact">
+          <FeaturedVehicles />
+        </div>
       </div>
 
-      <div className="w-full px-4 md:px-8 py-12">
-         <StatsSection />
+      {/* Stats */}
+      <div className="section-compact px-6">
+         <div className="container-compact">
+            <StatsSection />
+         </div>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 w-full pb-24">
-        <ReviewsPage />
+      {/* Témoignages */}
+      <div className="section-compact">
+        <div className="container-compact">
+          <ReviewsPage />
+        </div>
       </div>
     </div>
   );
