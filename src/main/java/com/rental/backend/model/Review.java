@@ -16,16 +16,21 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String userName; // Nom de l'auteur
-    private String userAvatar; // Avatar de l'auteur (optionnel)
+    // Infos de l'auteur (pour l'affichage)
+    private String userName; 
+    private String userAvatar;
     
+    // --- CORRECTION : AJOUT DU CHAMP MANQUANT ---
+    private Long userId; // C'est ce champ que le Repository cherchait !
+    // --------------------------------------------
+
     @Column(length = 1000)
     private String comment;
     private Integer rating; // 1 à 5
     
     private LocalDate date;
 
-    // Cibles (Une seule sera remplie)
+    // Cibles (Sur quoi porte l'avis ?)
     private Long carId;
     private Long driverId;
     private Long agencyId;

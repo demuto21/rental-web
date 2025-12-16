@@ -1,13 +1,13 @@
 package com.rental.backend.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Data; // <--- C'est lui qui génère les getters/setters
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Data // <--- INDISPENSABLE
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "bookings")
@@ -16,30 +16,21 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Qui réserve ?
-    private Long userId; // ID de l'utilisateur
-    private String clientName;
-    private String clientEmail;
-    private String clientPhone;
-
-    // Quoi ?
     @ManyToOne
     @JoinColumn(name = "car_id")
-    private Car car;
+    private Car car; // Génère getCar() et setCar()
 
-    // Options
-    private boolean withDriver;
+    private Long userId;
+    private boolean withDriver; // Génère isWithDriver() et setWithDriver()
     
-    // Dates
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDateTime startDate; // Génère getStartDate()
+    private LocalDateTime endDate;   // Génère getEndDate()
 
-    // Financier
-    private Double totalPrice;
+    private Double totalPrice; // Génère setTotalPrice()
+    private String rentalType;
 
-    // Statut
     @Enumerated(EnumType.STRING)
-    private BookingStatus status; // PENDING, CONFIRMED, CANCELLED
+    private BookingStatus status; // Génère setStatus()
 
     private LocalDateTime createdAt = LocalDateTime.now();
 }

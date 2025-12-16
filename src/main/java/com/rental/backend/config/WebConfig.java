@@ -13,9 +13,9 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Autorise toutes les routes API
-                        .allowedOrigins("http://localhost:3000") // Autorise UNIQUEMENT votre Frontend
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                registry.addMapping("/**")
+                        .allowedOriginPatterns("*") // <--- REMPLACE allowedOrigins
+                        .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

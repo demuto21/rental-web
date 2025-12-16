@@ -16,35 +16,33 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Infos principales
-    private String name;       // Ex: Mercedes-Benz GLE 450
-    private String type;       // Ex: SUV, Berline, Sport
-    private Double pricePerDay;
-    private String location;   // Ex: Douala, Bonapriso
-    private Double rating;     // Ex: 4.8
-    private Integer reviewCount;
+    private String name;
+    private String type;
+    private String brand;
+    private String model;
+    
+    // IMPORTANT : C'est ce nom que le BookingService cherche
+    private Double pricePerDay; 
+    private Double pricePerHour;
+    
+    private String location;
     private boolean isAvailable;
-
-    @Column(length = 2000) // Texte long
+    
+    @Column(length = 2000)
     private String description;
 
     // Images
-    private String image; // Image principale (cover)
+    private String image;
     
     @ElementCollection
-    @CollectionTable(name = "car_gallery", joinColumns = @JoinColumn(name = "car_id"))
-    @Column(name = "image_url")
-    private List<String> gallery; // Liste des autres images
+    private List<String> images;
 
-    // Caractéristiques Techniques (Specs)
-    private String vitesseMax;   // "250 km/h"
-    private String acceleration; // "0-100 en 5.7s"
-    private String puissance;    // "367 ch"
-    private String moteur;       // "V6 Turbo"
-    private String transmission; // "Automatique 9G"
-    private Integer places;      // 5 ou 7
-
-    // Relation Agence
+    // Specs
+    private String transmission;
+    private String fuelType;
+    private Integer seats;
+    private Integer maxSpeed;
+    
     @ManyToOne
     @JoinColumn(name = "agency_id")
     private Agency agency;
