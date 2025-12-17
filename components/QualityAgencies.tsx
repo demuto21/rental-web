@@ -1,154 +1,118 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { HeartIcon, StarIcon, MapPinIcon, ClockIcon } from "./Icons";
-
-interface Agency {
-  name: string;
-  description: string;
-  logo: string;
-  location: string;
-  rating: number;
-  time?: string;
-}
-
-const agencies: Agency[] = [
-  {
-    name: "Company",
-    description: "C’est une agence de livraison des vivres.",
-    logo: "/assets/company-logo.jpg",
-    location: "Douala",
-    rating: 3.9,
-    time: "09:00 - 18:00",
-  },
-  {
-    name: "Company",
-    description: "C’est une agence de livraison des vivres.",
-    logo: "/assets/company-logo.jpg",
-    location: "Douala",
-    rating: 3.9,
-    time: "08:00 - 17:00",
-  },
-  {
-    name: "Company",
-    description: "C’est une agence de livraison des vivres.",
-    logo: "/assets/company-logo.jpg",
-    location: "Douala",
-    rating: 3.9,
-    time: "09:30 - 19:00",
-  },
-  {
-    name: "Company",
-    description: "C’est une agence de livraison des vivres.",
-    logo: "/assets/company-logo.jpg",
-    location: "Douala",
-    rating: 3.9,
-    time: "10:00 - 16:00",
-  },
-    {
-    name: "Company",
-    description: "C’est une agence de livraison des vivres.",
-    logo: "/assets/company-logo.jpg",
-    location: "Douala",
-    rating: 3.9,
-    time: "10:00 - 16:00",
-  },
-];
+import { MapPin, Star, Clock, ArrowRight, CheckCircle, Building2 } from "lucide-react";
+import { allAgencies } from "@/modules/agenciesData"; // On utilise la vraie base de données
 
 export default function QualityAgencies() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const slidesCount = 2; 
+  
+  // On affiche 3 cartes sur desktop, donc on limite l'index max
+  const maxIndex = allAgencies.length > 0 ? allAgencies.length - 1 : 0;
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % slidesCount);
-    }, 5000); 
-
+      setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+    }, 5000);
     return () => clearInterval(timer);
-  }, []);
-
-  const handleDotClick = (index: number) => {
-    setCurrentIndex(index);
-  };
+  }, [maxIndex]);
 
   return (
-    <section id="agencies" className="py-12 px-4 bg-white-50 text-center">
-      <h2 className="text-3xl font-bold text-blue-600 mb-2">Our Quality Agencies</h2>
-      <p className="text-gray-500 mb-8 max-w-2xl mx-auto">
-        Discover our partner agencies through which we can rent vehicles to customers.
-      </p>
+    <section className="py-20 relative overflow-hidden">
+      {/* Titre Section */}
+      <div className="text-center mb-12">
+        <span className="text-blue-600 font-bold tracking-wider text-sm uppercase bg-blue-50 px-3 py-1 rounded-full">
+          Partenaires
+        </span>
+        <h2 className="text-3xl md:text-4xl font-bold text-slate-800 mt-4 mb-2">
+          Nos Agences de Confiance
+        </h2>
+        <p className="text-slate-500 max-w-2xl mx-auto">
+          Nous collaborons avec les meilleures agences certifiées pour vous garantir qualité et sécurité.
+        </p>
+      </div>
 
-      {/* Conteneur du Carrousel */}
-      <div className="overflow-hidden relative max-w-6xl mx-auto mb-10">
+      {/* Carrousel */}
+      <div className="max-w-[1440px] mx-auto overflow-hidden px-4">
         <motion.div 
-          // Suppression de 'gap-6'
-          className="flex transition-transform duration-500 ease-in-out"
-          animate={{ x: `-${currentIndex * 100}%` }}
+          className="flex gap-6"
+          animate={{ x: `-${currentIndex * 350}px` }} // Ajustement du scroll (largeur carte + gap)
+          transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          {agencies.map((agency, i) => (
-            <div 
-              key={i} 
-              // Ajout de p-2 pour un espacement fin, et 33.33333% précis
-              className="min-w-full flex justify-center sm:min-w-[33.33333%] p-2"
-            >
-              {/* w-full pour occuper l'espace du slot */}
-              <div className="bg-white rounded-2xl shadow p-4 w-full text-left hover:shadow-lg transition relative">
-                {/* icône favoris en haut à droite */}
-                <div className="absolute top-3 right-3 text-gray-400 hover:text-red-500 cursor-pointer">
-                  <HeartIcon className="w-5 h-5" />
-                </div>
-
-                <h3 className="text-blue-600 font-bold text-lg">{agency.name}</h3>
-                <p className="text-gray-500 text-sm mt-1">{agency.description}</p>
-
-                <div className="flex justify-center mt-3">
-                  <Image src={agency.logo} alt={agency.name} width={100} height={100} className="object-contain" />
-                </div>
-
-                {/* ligne d'icônes: note - localisation - horaires */}
-                <div className="flex items-center justify-between text-gray-400 text-sm mt-3">
-                  <div className="flex items-center gap-2">
-                    <StarIcon className="w-4 h-4" />
-                    <span>{agency.rating}</span>
+          {allAgencies.map((agency) => (
+            <div key={agency.id} className="min-w-[320px] md:min-w-[380px] p-2">
+              <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group h-full flex flex-col">
+                
+                {/* Header Carte */}
+                <div className="flex justify-between items-start mb-6">
+                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-slate-50 flex items-center justify-center">
+                    {agency.logo ? (
+                        <Image 
+                        src={agency.logo} 
+                        alt={agency.name} 
+                        width={64} 
+                        height={64} 
+                        className="object-cover"
+                        />
+                    ) : (
+                        <Building2 className="text-slate-300" />
+                    )}
                   </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1 ${agency.isOpen ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                    {agency.isOpen ? <CheckCircle size={12} /> : null}
+                    {agency.isOpen ? "Ouvert" : "Fermé"}
+                  </span>
+                </div>
 
-                  <div className="flex items-center gap-2">
-                    <MapPinIcon className="w-4 h-4" />
-                    <span>{agency.location}</span>
+                {/* Info */}
+                <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-blue-600 transition-colors">
+                  {agency.name}
+                </h3>
+                <p className="text-slate-500 text-sm mb-6 flex-1 line-clamp-2">
+                  {agency.description}
+                </p>
+
+                {/* Métadonnées */}
+                <div className="space-y-3 pt-6 border-t border-slate-100">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center text-slate-600 gap-2">
+                      <MapPin size={16} className="text-blue-500" />
+                      <span className="truncate max-w-[120px]">{agency.city}</span>
+                    </div>
+                    <div className="flex items-center gap-1 font-bold text-slate-700">
+                      <Star size={16} className="text-orange-400 fill-orange-400" />
+                      {agency.rating}
+                    </div>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <ClockIcon className="w-4 h-4" />
-                    <span>{agency.time}</span>
+                  
+                  <div className="flex items-center text-slate-600 gap-2 text-sm">
+                    <Clock size={16} className="text-orange-500" />
+                    {agency.openingHours}
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center mt-4">
-                  <p className="text-gray-700 font-semibold">Douala</p>
-                  <button className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-1 rounded">View More</button>
-                </div>
+                {/* Bouton Voir - LIEN DYNAMIQUE AJOUTÉ */}
+                <Link href={`/Agencies/${agency.id}`}>
+                    <button className="w-full mt-6 py-3 rounded-xl bg-slate-50 text-blue-600 font-bold text-sm hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2 group-hover:shadow-md">
+                    Visiter l'agence <ArrowRight size={16} />
+                    </button>
+                </Link>
               </div>
             </div>
           ))}
         </motion.div>
       </div>
 
-      {/* Points de navigation (Dots) */}
-      <div className="flex justify-center mb-8 gap-2">
-        {Array.from({ length: slidesCount }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => handleDotClick(i)}
-            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-              i === currentIndex ? "bg-blue-600" : "bg-gray-300"
-            }`}
-          />
-        ))}
-      </div>
-
-      <div className="flex justify-center">
-        <button className="bg-orange-500 hover:bg-orange-600 text-white text-lg font-semibold px-8 py-2 rounded-full">View More</button>
+      {/* Footer Bouton */}
+      <div className="text-center mt-12">
+        <Link href="/Agencies">
+          <button className="bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all">
+            Voir toutes les agences
+          </button>
+        </Link>
       </div>
     </section>
   );

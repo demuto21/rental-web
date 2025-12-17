@@ -1,101 +1,87 @@
+"use client";
+
 import Link from 'next/link';
-import { FaInstagram, FaTwitter, FaYoutube, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, Car, Heart, Sparkles } from 'lucide-react';
 
 export default function Footer() {
-    return (
-        <footer id="footer" className="bg-white text-gray-700"> {/* Fond blanc, texte gris */}
-            <div className="container mx-auto px-6 py-16">
+  
+  return (
+    <footer className="bg-white border-t border-slate-200 pt-16 pb-8 font-sans">
+      <div className="max-w-[1440px] mx-auto px-6">
+        
+        {/* --- PARTIE HAUTE (Grille) --- */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          
+          {/* Colonne 1 : Marque */}
+          <div className="col-span-1 md:col-span-1">
+            <Link href="/" className="text-2xl font-bold flex items-center gap-2 mb-6">
+               <div className="bg-blue-600 text-white p-1.5 rounded-lg">
+                  <Car size={24} />
+               </div>
+               <div>
+                 <span className="text-blue-600">EASY</span>
+                 <span className="text-orange-500">-RENT</span>
+               </div>
+            </Link>
+            <p className="text-slate-500 text-sm leading-relaxed mb-6">
+              La plateforme de location de véhicules numéro 1 au Cameroun. 
+              Simple, rapide et sécurisé.
+            </p>
+          </div>
 
-                {/* Grille principale du Footer */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-
-                    {/* Colonne 1: Logo et Réseaux */}
-                    <div className="md:col-span-1">
-                        {/* REMARQUE : Remplacez ce H2 par votre composant Logo 
-              ou une balise next/image comme ceci :
-              <Image src="/logo.svg" alt="Easy-Rent Logo" width={150} height={40} />
-            */}
-                        <h2 className="text-2xl font-bold">
-                            <span className="text-blue-600">EASY</span>
-                            <span className="text-orange-500">-RENT</span> {/* Ajustez "text-orange-500" si la couleur est différente */}
-                        </h2>
-                        <p className="mt-2 text-gray-500">
-                            Rent your Dream Car with a Click
-                        </p>
-                        {/* Icônes de réseaux sociaux */}
-                        <div className="flex space-x-4 mt-6">
-                            <Link href="#" className="text-gray-400 hover:text-gray-600">
-                                <FaInstagram size={20} />
-                            </Link>
-                            <Link href="#" className="text-gray-400 hover:text-gray-600">
-                                <FaTwitter size={20} />
-                            </Link>
-                            <Link href="#" className="text-gray-400 hover:text-gray-600">
-                                <FaYoutube size={20} />
-                            </Link>
-                            <Link href="#" className="text-gray-400 hover:text-gray-600">
-                                <FaFacebookF size={20} />
-                            </Link>
-                            <Link href="#" className="text-gray-400 hover:text-gray-600">
-                                <FaLinkedinIn size={20} />
-                            </Link>
-                        </div>
-                    </div>
-
-                    {/* Colonne 2: Legal */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-900">Legal</h3>
-                        <ul className="mt-4 space-y-2">
-                            <li><Link href="/mentions-legales" className="hover:underline">Legal Notice
-                            </Link></li>
-                            <li><Link href="/cgv" className="hover:underline">Terms and Conditions
-                            </Link></li>
-                            <li><Link href="/confidentialite" className="hover:underline">Privacy</Link></li>
-                            <li><Link href="/cookies" className="hover:underline">Cookies</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Colonne 3: Services */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-900">Services</h3>
-                        <ul className="mt-4 space-y-2">
-                            <li><Link href="/financement" className="hover:underline">Financing</Link></li>
-                            <li><Link href="/assurance" className="hover:underline">Insurance</Link></li>
-                            <li><Link href="/garantie" className="hover:underline">Warranty</Link></li>
-                            <li><Link href="/livraison" className="hover:underline">Delivery</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Colonne 4: Contact Us */}
-                    <div>
-                        <h3 className="text-lg font-semibold text-gray-900">Contact Us</h3>
-                        <ul className="mt-4 space-y-2">
-                            {/* Le lien "mailto:" ouvrira le client email de l'utilisateur */}
-                            <li>
-                                <a href="mailto:easy-rent@mail.com" className="text-blue-600 hover:underline">
-                                    easy-rent@mail.com
-                                </a>
-                            </li>
-                            {/* J'ajoute un exemple pour le téléphone, même si l'icône est petite */}
-                            <li>
-                <a href="tel:+33123456789" className="hover:underline">+237 699999999</a>
+          {/* Colonne 2 : Liens Entreprise (AVEC LE LIEN PLANS) */}
+          <div>
+            <h3 className="font-bold text-slate-800 mb-6 text-lg">Entreprise</h3>
+            <ul className="space-y-4 text-slate-600 text-sm font-medium">
+              <li><Link href="#" className="hover:text-blue-600 transition-colors flex items-center gap-2">À propos</Link></li>
+              
+              {/* --- LIEN STRATÉGIQUE --- */}
+              <li>
+                <Link href="/Plans" className="hover:text-blue-600 transition-colors flex items-center gap-2 text-blue-600 font-bold">
+                     Nos Forfaits Illimités
+                </Link>
               </li>
-                        </ul>
-                    </div>
+              {/* ------------------------ */}
 
-                </div>
-            </div>
+              <li><Link href="#" className="hover:text-blue-600 transition-colors flex items-center gap-2">Carrières</Link></li>
+              <li><Link href="#" className="hover:text-blue-600 transition-colors flex items-center gap-2">Blog & Actualités</Link></li>
+            </ul>
+          </div>
 
-            {/* Ligne de séparation et Copyright */}
-            <div className="border-t border-gray-200">
-                <div className="container mx-auto px-6 py-6 text-center text-sm text-gray-500">
-                    © 2025 Easy-rent. All rights reserved
+          {/* Colonne 3 : Liens Support */}
+          <div>
+            <h3 className="font-bold text-slate-800 mb-6 text-lg">Support</h3>
+            <ul className="space-y-4 text-slate-600 text-sm font-medium">
+              <li><Link href="/Help" className="hover:text-blue-600 transition-colors">Centre d'aide</Link></li>
+              <li><Link href="#" className="hover:text-blue-600 transition-colors">Conditions générales</Link></li>
+              <li><Link href="#" className="hover:text-blue-600 transition-colors">Confidentialité</Link></li>
+            </ul>
+          </div>
+
+          {/* Colonne 4 : Réseaux */}
+          <div>
+            <h3 className="font-bold text-slate-800 mb-6 text-lg">Restez connecté</h3>
+            <div className="flex gap-3 mb-8">
+              {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
+                <div key={i} className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 hover:bg-blue-600 hover:text-white transition-all cursor-pointer">
+                    <Icon size={18} />
                 </div>
+              ))}
             </div>
-            {/* ----- BARRES DE PIED DE PAGE (Footer Bars) ----- */}
-            <div className="mt-16">
-                <div className="h-4 bg-blue-600"></div>
+            {/* Newsletter simplifiée */}
+            <div className="flex">
+                <input type="email" placeholder="Email" className="bg-slate-50 border border-slate-200 rounded-l-xl px-4 py-2 text-sm w-full" />
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-r-xl text-sm font-bold">OK</button>
             </div>
-        </footer>
-    );
+          </div>
+        </div>
+
+        <div className="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+          <p>© 2025 Easy-Rent. Tous droits réservés.</p>
+          <div className="flex items-center gap-1 bg-slate-50 px-3 py-1 rounded-full">
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }

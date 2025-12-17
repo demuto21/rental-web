@@ -8,7 +8,10 @@ interface CarProps {
     currency: string;
     rating: number;
     seats: number;
-    // Ajoute d'autres props si nécessaire
+    image: string; // <-- Ajouté pour que TypeScript reconnaisse l'image
+    transmission: number;
+    tag: string;
+    isFavorite: boolean;
   };
 }
 
@@ -18,19 +21,25 @@ export default function CarCard({ data }: CarProps) {
       {/* Header Card */}
       <div className="w-full flex justify-between items-start mb-2">
         <h3 className="text-blue-700 font-bold text-lg">{data.name}</h3>
-        <Heart className="text-red-500 fill-red-500 w-5 h-5 cursor-pointer" />
+        <Heart 
+          className={`w-5 h-5 cursor-pointer ${data.isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"}`} 
+        />
       </div>
 
-      {/* Car Image Area */}
-      <div className="relative w-full h-32 mb-2">
-        {/* Placeholder pour l'image - remplace src par ton image réelle */}
-        <div className="w-full h-full bg-gray-100 rounded-lg flex items-center justify-center text-gray-400">
-            [Image Voiture]
-        </div>
-        <span className="absolute bottom-0 right-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-l-full rounded-br-lg">
-          detail
+      {/* --- ZONE IMAGE CORRIGÉE --- */}
+      <div className="relative w-full h-40 mb-4 rounded-xl overflow-hidden bg-gray-50">
+        <Image
+            src={data.image}
+            alt={data.name}
+            fill // Utilise tout l'espace du conteneur parent (h-40)
+            className="object-contain" // ou "object-cover" selon le rendu voulu
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        <span className="absolute bottom-0 right-0 bg-orange-500 text-white text-xs px-3 py-1 rounded-tl-lg font-medium">
+          {data.tag}
         </span>
       </div>
+      {/* --------------------------- */}
 
       {/* Price */}
       <div className="w-full text-left mb-2">
@@ -42,19 +51,19 @@ export default function CarCard({ data }: CarProps) {
       {/* Specs Icons */}
       <div className="flex justify-start gap-4 w-full text-gray-400 text-xs mb-4">
         <div className="flex items-center gap-1">
-          <User size={14} /> <span>{data.seats}</span>
+          <User size={14} /> <span>{data.seats} places</span>
         </div>
         <div className="flex items-center gap-1">
           <Star size={14} className="text-orange-400 fill-orange-400" /> <span>{data.rating}</span>
         </div>
         <div className="flex items-center gap-1">
-          <DoorOpen size={14} /> <span>2</span>
+          <DoorOpen size={14} /> <span>Auto</span>
         </div>
       </div>
 
       {/* Action Button */}
       <button className="w-full bg-blue-700 text-white font-semibold py-2 rounded-full hover:bg-blue-800 transition-colors">
-        book now
+        Book Now
       </button>
     </div>
   );
