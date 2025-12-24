@@ -20,6 +20,9 @@ public class Booking {
     @JoinColumn(name = "car_id")
     private Car car; // Génère getCar() et setCar()
 
+    @JoinColumn(name = "driver_id")
+private User driver;
+
     private Long userId;
     private boolean withDriver; // Génère isWithDriver() et setWithDriver()
     

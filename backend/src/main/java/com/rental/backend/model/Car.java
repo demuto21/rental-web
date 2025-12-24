@@ -21,9 +21,10 @@ public class Car {
     private String brand;
     private String model;
     
-    // IMPORTANT : C'est ce nom que le BookingService cherche
+    // PRIX
     private Double pricePerDay; 
     private Double pricePerHour;
+    private Double monthlyPrice; // <--- C'est ce champ qui est essentiel
     
     private String location;
     private boolean isAvailable;
@@ -31,13 +32,11 @@ public class Car {
     @Column(length = 2000)
     private String description;
 
-    // Images
     private String image;
     
     @ElementCollection
     private List<String> images;
 
-    // Specs
     private String transmission;
     private String fuelType;
     private Integer seats;
