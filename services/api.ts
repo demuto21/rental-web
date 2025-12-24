@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// L'URL de votre Backend Spring Boot
 const API_URL = 'http://localhost:8081/api';
 
 const api = axios.create({
@@ -10,30 +9,29 @@ const api = axios.create({
   },
 });
 
-// --- FONCTIONS D'APPEL ---
-
-// 1. Voitures
 export const carService = {
   getAll: () => api.get('/cars'),
   getById: (id: number) => api.get(`/cars/${id}`),
   create: (data: any) => api.post('/cars', data),
 };
 
-// 2. Chauffeurs
 export const driverService = {
   getAll: () => api.get('/drivers'),
   getById: (id: number) => api.get(`/drivers/${id}`),
 };
 
-// 3. Agences
 export const agencyService = {
   getAll: () => api.get('/agencies'),
   getById: (id: number) => api.get(`/agencies/${id}`),
 };
 
-// 4. Réservations
 export const bookingService = {
-  create: (data: any) => api.post('/bookings', data),
+  create: (data: any) => api.post('/bookings', data), // Pour créer une réservation (Client)
+  getByUser: (userId: number) => api.get(`/bookings/user/${userId}`), // Pour l'historique (Client)
+  
+  // --- AJOUTS POUR LE DASHBOARD AGENCE ---
+  getAll: () => api.get('/bookings'), // Pour voir toutes les demandes
+  updateStatus: (id: number, status: string) => api.put(`/bookings/${id}/status?status=${status}`), // Pour Valider/Refuser
 };
 
 export default api;

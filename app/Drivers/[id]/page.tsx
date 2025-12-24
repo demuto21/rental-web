@@ -41,8 +41,12 @@ export default function DriverProfilePage() {
             </Link>
             <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-xl overflow-hidden bg-slate-700">
-                    <Image src={driver.image || "/assets/driver.png"} alt={driver.name} fill className="object-cover" />
-                </div>
+<Image 
+    src={driver.image || "/assets/driver.png"} 
+    alt={driver.name || "Photo du chauffeur"} // <--- AJOUTEZ LE TEXTE PAR DÉFAUT ICI
+    fill 
+    className="object-cover" 
+/>                </div>
                 <div className="text-center md:text-left">
                     <h1 className="text-3xl font-bold mb-2">{driver.name}</h1>
                     <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm font-medium text-slate-300">

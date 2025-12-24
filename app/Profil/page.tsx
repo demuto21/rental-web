@@ -3,16 +3,19 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useTheme } from "next-themes"; // Import pour le thème
-import { 
-  Home, LayoutGrid, Heart, DollarSign, Bell, Settings, LogOut, 
-  Search, Edit2, ChevronDown, Calendar, Car, Trash2, User, 
-  Mail, MapPin, Lock, Smartphone, CreditCard, BellRing, Globe, 
-  Moon, Shield, FileText, HelpCircle, ChevronRight, ArrowLeft, 
-  Sun, Monitor, Crown // Crown pour l'abonnement
+import { useTheme } from "next-themes";
+import { useEffect } from "react";
+import { bookingService } from "@/services/api";
+import { useAuth } from "@/context/AuthContext"; // Import du contexte
+import {
+    Home, LayoutGrid, Heart, DollarSign, Bell, Settings, LogOut,
+    Search, Edit2, ChevronDown, Calendar, Car, Trash2, User,
+    Mail, MapPin, Lock, Smartphone, CreditCard, BellRing, Globe,
+    Moon, Shield, FileText, HelpCircle, ChevronRight, ArrowLeft,
+    Sun, Monitor, Crown, Menu, X, CalendarClock // Ajout de CalendarClock, Menu, X
 } from "lucide-react";
 
-// --- DONNÉES FACTICES ---
+// --- DONNÉES FACTICES (Mises à jour avec monthlyPrice) ---
 
 const mockNotifications = [
     { id: 1, title: "Réservation confirmée", content: "Votre réservation pour la Mercedes GLE 450 a été confirmée.", date: "Aujourd'hui, 10:30", type: "success" },
@@ -27,14 +30,39 @@ const mockTransactions = [
 ];
 
 const mockFavorites = [
-    { id: 1, name: "Toyota Camry", price: "45 000", image: "/assets/car2.jpeg", rating: 4.8, type: "Berline" },
-    { id: 2, name: "Range Rover Evoque", price: "120 000", image: "/assets/car3.jpeg", rating: 5.0, type: "SUV" },
-    { id: 3, name: "Audi A4", price: "60 000", image: "/assets/car4.jpeg", rating: 4.6, type: "Berline" },
+    {
+        id: 1,
+        name: "Toyota Camry",
+        price: "45 000",
+        monthlyPrice: "850 000", // PRIX ABONNEMENT
+        image: "/assets/car2.jpeg",
+        rating: 4.8,
+        type: "Berline"
+    },
+    {
+        id: 2,
+        name: "Range Rover Evoque",
+        price: "120 000",
+        monthlyPrice: "2 500 000", // PRIX ABONNEMENT
+        image: "/assets/car3.jpeg",
+        rating: 5.0,
+        type: "SUV"
+    },
+    {
+        id: 3,
+        name: "Audi A4",
+        price: "60 000",
+        // Pas d'abonnement sur celle-ci
+        image: "/assets/car4.jpeg",
+        rating: 4.6,
+        type: "Berline"
+    },
 ];
 
 // --- SOUS-COMPOSANTS VUES ---
 
-const InformationView = () => (
+// Modifié pour accepter l'objet 'user'
+const InformationView = ({ user }: { user: any }) => (
     <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
         <div className="h-32 bg-gradient-to-r from-blue-600 to-blue-500 w-full relative">
             <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md p-2 rounded-full cursor-pointer hover:bg-white/30 transition">
@@ -45,16 +73,20 @@ const InformationView = () => (
             <div className="flex flex-col md:flex-row justify-between items-end -mt-12 mb-10 gap-4">
                 <div className="flex items-end gap-6">
                     <div className="relative">
-                        <div className="w-32 h-32 rounded-full border-4 border-white dark:border-slate-800 shadow-md overflow-hidden bg-slate-100">
-                            <Image src="/assets/default-avatar.jpeg" alt="Avatar" width={128} height={128} className="object-cover h-full w-full" />
+                        <div className="w-32 h-32 rounded-full border-4 border-white dark:border-slate-800 shadow-md overflow-hidden bg-slate-100 flex items-center justify-center">
+                            {user?.fullName ? (
+                                <span className="text-4xl font-bold text-slate-300">{user.fullName.charAt(0)}</span>
+                            ) : (
+                                <Image src="/assets/default-avatar.jpeg" alt="Avatar" width={128} height={128} className="object-cover h-full w-full" />
+                            )}
                         </div>
                         <button className="absolute bottom-1 right-1 bg-blue-600 p-2 rounded-full border-2 border-white text-white hover:bg-blue-700 transition shadow-sm">
                             <Edit2 size={14} />
                         </button>
                     </div>
                     <div className="mb-3">
-                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Serge Kenfack</h2>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm">Membre depuis 2023</p>
+                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">{user?.fullName || "Utilisateur"}</h2>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm">Rôle : {user?.role || "Membre"}</p>
                     </div>
                 </div>
                 <button className="bg-slate-900 dark:bg-white dark:text-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-slate-800 transition shadow-lg">
@@ -68,7 +100,7 @@ const InformationView = () => (
                         <label className="block text-slate-600 dark:text-slate-300 text-sm font-medium mb-2">Nom Complet</label>
                         <div className="relative">
                             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                            <input type="text" defaultValue="Serge Kenfack" className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-12 pr-4 text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                            <input type="text" defaultValue={user?.fullName || ""} className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-12 pr-4 text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
                         </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -100,7 +132,7 @@ const InformationView = () => (
                         <label className="block text-slate-600 dark:text-slate-300 text-sm font-medium mb-2">Email</label>
                         <div className="relative">
                             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
-                            <input type="email" defaultValue="jean.dupont@email.com" className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-12 pr-4 text-slate-700 dark:text-slate-200 outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
+                            <input type="email" readOnly defaultValue={user?.email || ""} className="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 pl-12 pr-4 text-slate-500 dark:text-slate-400 outline-none cursor-not-allowed" />
                         </div>
                     </div>
                     <div>
@@ -116,15 +148,24 @@ const InformationView = () => (
     </div>
 );
 
+// Modifié pour afficher l'abonnement
 const FavoriteView = () => (
     <div className="space-y-6">
         <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Mes Favoris</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockFavorites.map((car) => (
-                <div key={car.id} className="bg-white dark:bg-slate-800 rounded-3xl p-4 shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+            {mockFavorites.map((car: any) => (
+                <div key={car.id} className="bg-white dark:bg-slate-800 rounded-3xl p-4 shadow-sm hover:shadow-lg transition-all duration-300 border border-slate-100 dark:border-slate-700 group relative">
+
+                    {/* Badge Abonnement */}
+                    {car.monthlyPrice && (
+                        <div className="absolute top-6 left-6 z-20 bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300 text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                            <CalendarClock size={12} /> Abonnement dispo
+                        </div>
+                    )}
+
                     <div className="relative h-48 bg-slate-100 dark:bg-slate-900 rounded-2xl overflow-hidden mb-4">
                         <Image src={car.image} alt={car.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <button className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full text-red-500 shadow-sm hover:bg-red-50 transition">
+                        <button className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full text-red-500 shadow-sm hover:bg-red-50 transition z-30">
                             <Heart className="fill-current w-5 h-5" />
                         </button>
                         <span className="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full">{car.type}</span>
@@ -137,8 +178,20 @@ const FavoriteView = () => (
                                 <span className="text-orange-400">★</span>
                             </div>
                         </div>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">À partir de <span className="text-blue-600 dark:text-blue-400 font-bold text-lg">{car.price} FCFA</span>/jour</p>
-                        <button className="w-full bg-blue-600 text-white rounded-xl py-3 font-semibold hover:bg-blue-700 transition shadow-md hover:shadow-lg">Louer maintenant</button>
+                        <div className="mb-4">
+                            <p className="text-slate-500 dark:text-slate-400 text-sm">
+                                À partir de <span className="text-blue-600 dark:text-blue-400 font-bold text-lg">{car.price} FCFA</span>/jour
+                            </p>
+                            {/* Affichage du prix abonnement */}
+                            {car.monthlyPrice && (
+                                <p className="text-purple-600 dark:text-purple-400 text-xs font-bold mt-1 flex items-center gap-1 animate-pulse">
+                                    <CalendarClock size={12} /> Ou {car.monthlyPrice} FCFA /mois
+                                </p>
+                            )}
+                        </div>
+                        <button className="w-full bg-blue-600 text-white rounded-xl py-3 font-semibold hover:bg-blue-700 transition shadow-md hover:shadow-lg">
+                            Louer ou S'abonner
+                        </button>
                     </div>
                 </div>
             ))}
@@ -174,78 +227,168 @@ const NotificationsView = () => (
     </div>
 );
 
-const TransactionsView = ({ type }: { type: 'locations' | 'payments' }) => (
-    <div className="space-y-8">
-        {type === 'locations' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                    { label: "Locations Actives", value: "1", icon: Car, color: "bg-blue-600" },
-                    { label: "Total Dépensé", value: "850k", icon: DollarSign, color: "bg-green-500" },
-                    { label: "Total Locations", value: "12", icon: Calendar, color: "bg-orange-500" },
-                ].map((stat, i) => (
-                    <div key={i} className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md ${stat.color}`}><stat.icon size={24} /></div>
-                        <div>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{stat.label}</p>
-                            <p className="text-2xl font-bold text-slate-800 dark:text-white">{stat.value}</p>
+// --- COMPOSANT TRANSACTIONS VIEW CORRIGÉ ---
+const TransactionsView = ({ type }: { type: 'locations' | 'payments' }) => {
+    const { user } = useAuth();
+    const [bookings, setBookings] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        // 1. Si on est sur l'onglet Paiements (pas encore implémenté), on arrête le chargement
+        if (type !== 'locations') {
+            setLoading(false);
+            return;
+        }
+
+        // 2. Si l'utilisateur n'est pas là, on attend (ou on arrête si on est sûr qu'il n'est pas connecté)
+        if (!user) {
+            // On laisse 'loading' à true le temps que AuthContext charge, 
+            // ou on peut mettre false si on veut afficher "Non connecté".
+            return;
+        }
+
+        // 3. Si l'utilisateur est là mais n'a pas d'ID (Problème critique)
+        if (!user.id) {
+            console.error("Erreur critique : Utilisateur connecté sans ID", user);
+            setError("Erreur de profil : Impossible de récupérer vos réservations.");
+            setLoading(false);
+            return;
+        }
+
+        // 4. Tout est bon, on lance la requête
+        setLoading(true);
+        bookingService.getByUser(user.id)
+            .then(res => {
+                const sorted = res.data.sort((a: any, b: any) =>
+                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                );
+                setBookings(sorted);
+            })
+            .catch(err => {
+                console.error("Erreur chargement réservations", err);
+                setError("Impossible de charger l'historique.");
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+
+    }, [user, type]); // Dépendances
+
+    // --- Fonction utilitaire date ---
+    const formatDate = (dateString: string) => {
+        if (!dateString) return "-";
+        return new Date(dateString).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    };
+
+    // Calculs
+    const activeRentals = bookings.filter(b => b.status === 'CONFIRMED' || b.status === 'PENDING').length;
+    const totalSpent = bookings.reduce((acc, b) => acc + (b.totalPrice || 0), 0);
+
+    return (
+        <div className="space-y-8">
+            {type === 'locations' && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {[
+                        { label: "Réservations Actives", value: activeRentals.toString(), icon: Car, color: "bg-blue-600" },
+                        { label: "Total Dépensé", value: `${(totalSpent).toLocaleString()} F`, icon: DollarSign, color: "bg-green-500" },
+                        { label: "Total Historique", value: bookings.length.toString(), icon: Calendar, color: "bg-orange-500" },
+                    ].map((stat, i) => (
+                        <div key={i} className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center gap-4">
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-md ${stat.color}`}><stat.icon size={24} /></div>
+                            <div>
+                                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{stat.label}</p>
+                                <p className="text-2xl font-bold text-slate-800 dark:text-white">{stat.value}</p>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
-        )}
-        <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
-            <div className="p-6 border-b border-slate-100 dark:border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
-                <h3 className="font-bold text-xl text-slate-800 dark:text-white">{type === 'locations' ? 'Historique des Locations' : 'Historique des Paiements'}</h3>
-                <div className="flex gap-3">
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                        <input type="text" placeholder="Rechercher..." className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 pl-10 pr-4 py-2 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-100 w-48 text-slate-700 dark:text-white" />
-                    </div>
-                    <button className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-xl flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"><Calendar className="w-4 h-4" /> 2023 <ChevronDown className="w-4 h-4" /></button>
+                    ))}
+                </div>
+            )}
+
+            <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
+                <div className="p-6 border-b border-slate-100 dark:border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h3 className="font-bold text-xl text-slate-800 dark:text-white">
+                        {type === 'locations' ? 'Mes Réservations' : 'Historique des Paiements'}
+                    </h3>
+                </div>
+
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-slate-700 dark:text-slate-200">
+                        <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
+                            <tr>
+                                <th className="py-4 px-6 font-semibold text-sm">Véhicule</th>
+                                <th className="py-4 px-6 font-semibold text-sm hidden md:table-cell">Type</th>
+                                <th className="py-4 px-6 font-semibold text-sm">Dates</th>
+                                <th className="py-4 px-6 font-semibold text-sm">Statut</th>
+                                <th className="py-4 px-6 font-semibold text-sm text-right">Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-50 dark:divide-slate-700">
+                            {loading ? (
+                                <tr><td colSpan={5} className="py-8 text-center text-slate-500">Chargement des données...</td></tr>
+                            ) : error ? (
+                                <tr><td colSpan={5} className="py-8 text-center text-red-500 font-bold">{error}</td></tr>
+                            ) : bookings.length === 0 ? (
+                                <tr><td colSpan={5} className="py-8 text-center text-slate-500">Aucune réservation trouvée.</td></tr>
+                            ) : (
+                                bookings.map((item) => (
+                                    <tr key={item.id} className="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
+                                        <td className="py-4 px-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden flex-shrink-0 relative">
+                                                    <Image
+                                                        src={item.car?.image || "/assets/car1.jpeg"}
+                                                        width={48} height={48}
+                                                        alt={item.car?.name || "Image véhicule"} // <--- AJOUTEZ CECI
+                                                        className="object-cover h-full w-full"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <p className="font-bold text-slate-800 dark:text-white">{item.car?.name || "Véhicule"}</p>
+                                                    <p className="text-xs text-slate-400 font-mono bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded inline-block mt-1">
+                                                        {item.car?.brand || "Marque"}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="py-4 px-6 hidden md:table-cell">
+                                            <span className={`text-xs font-bold px-2 py-1 rounded ${item.rentalType === 'MONTHLY' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'}`}>
+                                                {item.rentalType === 'MONTHLY' ? 'ABONNEMENT' : 'JOURNALIER'}
+                                            </span>
+                                        </td>
+                                        <td className="py-4 px-6">
+                                            <p className="text-sm font-medium">
+                                                {formatDate(item.startDate)} <br /> <span className="text-xs text-slate-400">au</span> {formatDate(item.endDate)}
+                                            </p>
+                                        </td>
+                                        <td className="py-4 px-6">
+                                            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold 
+                                        ${item.status === 'CONFIRMED' ? 'bg-green-100 text-green-700' : ''} 
+                                        ${item.status === 'PENDING' ? 'bg-orange-100 text-orange-700' : ''}
+                                        ${item.status === 'CANCELLED' ? 'bg-red-100 text-red-700' : ''}
+                                    `}>
+                                                <span className={`w-1.5 h-1.5 rounded-full 
+                                            ${item.status === 'CONFIRMED' ? 'bg-green-500' : ''}
+                                            ${item.status === 'PENDING' ? 'bg-orange-500' : ''}
+                                            ${item.status === 'CANCELLED' ? 'bg-red-500' : ''}
+                                        `}></span>
+                                                {item.status === 'PENDING' ? 'En attente' : item.status}
+                                            </span>
+                                        </td>
+                                        <td className="py-4 px-6 text-right">
+                                            <span className="font-bold text-slate-800 dark:text-white">
+                                                {item.totalPrice?.toLocaleString()} CFA
+                                            </span>
+                                        </td>
+                                    </tr>
+                                )))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div className="overflow-x-auto">
-                <table className="w-full text-left text-slate-700 dark:text-slate-200">
-                    <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
-                        <tr>
-                            <th className="py-4 px-6 font-semibold text-sm">Véhicule</th>
-                            <th className="py-4 px-6 font-semibold text-sm hidden md:table-cell">Agence</th>
-                            <th className="py-4 px-6 font-semibold text-sm">Période</th>
-                            <th className="py-4 px-6 font-semibold text-sm">Statut</th>
-                            <th className="py-4 px-6 font-semibold text-sm text-right">Montant</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-50 dark:divide-slate-700">
-                        {mockTransactions.map((item, i) => (
-                            <tr key={i} className="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
-                                <td className="py-4 px-6">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-lg overflow-hidden flex-shrink-0"><Image src="/assets/car2.jpeg" width={48} height={48} alt="car" className="object-cover h-full w-full" /></div>
-                                        <div><p className="font-bold text-slate-800 dark:text-white">{item.car}</p><p className="text-xs text-slate-400 font-mono bg-slate-100 dark:bg-slate-700 px-1.5 py-0.5 rounded inline-block mt-1">{item.plate}</p></div>
-                                    </div>
-                                </td>
-                                <td className="py-4 px-6 hidden md:table-cell">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">{item.provider[0]}</div>
-                                        <span className="text-sm font-medium">{item.provider}</span>
-                                    </div>
-                                </td>
-                                <td className="py-4 px-6"><p className="text-sm font-medium">{item.period}</p></td>
-                                <td className="py-4 px-6">
-                                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${item.status === 'Terminé' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : ''} ${item.status === 'En cours' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : ''} ${item.status === 'Annulé' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : ''}`}>
-                                        <span className={`w-1.5 h-1.5 rounded-full ${item.status === 'Terminé' ? 'bg-green-500' : ''} ${item.status === 'En cours' ? 'bg-blue-500' : ''} ${item.status === 'Annulé' ? 'bg-red-500' : ''}`}></span>
-                                        {item.status}
-                                    </span>
-                                </td>
-                                <td className="py-4 px-6 text-right"><span className="font-bold text-slate-800 dark:text-white">{item.amount}</span></td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
         </div>
-    </div>
-);
+    );
+};
 
 // --- COMPOSANTS DE FORMULAIRES PARAMÈTRES ---
 
@@ -258,7 +401,6 @@ const SettingsHeader = ({ title, onBack }: { title: string, onBack: () => void }
     </div>
 );
 
-// Formulaire Apparence (Thème) - FONCTIONNEL AVEC NEXT-THEMES
 const ThemeForm = ({ onBack }: any) => {
     const { theme, setTheme } = useTheme();
 
@@ -271,36 +413,35 @@ const ThemeForm = ({ onBack }: any) => {
                     { label: 'Thème sombre', value: 'dark', icon: Moon },
                     { label: 'Système', value: 'system', icon: Monitor }
                 ].map((option, i) => (
-                     <label 
-                        key={i} 
+                    <label
+                        key={i}
                         className={`flex items-center justify-between p-4 border rounded-2xl cursor-pointer transition-all group
-                            ${theme === option.value 
-                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
+                            ${theme === option.value
+                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                                 : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700'
                             }
                         `}
-                     >
+                    >
                         <div className="flex items-center gap-3">
                             <option.icon className={`
                                 ${theme === option.value ? 'text-blue-600' : 'text-slate-500 dark:text-slate-400'}
                             `} />
                             <span className="font-medium text-slate-700 dark:text-slate-200">{option.label}</span>
                         </div>
-                        <input 
-                            type="radio" 
-                            name="theme" 
-                            className="accent-blue-600 w-5 h-5" 
+                        <input
+                            type="radio"
+                            name="theme"
+                            className="accent-blue-600 w-5 h-5"
                             checked={theme === option.value}
                             onChange={() => setTheme(option.value)}
                         />
-                     </label>
+                    </label>
                 ))}
             </div>
         </div>
     );
 };
 
-// Formulaire Langue
 const LanguageForm = ({ onBack }: any) => (
     <div className="max-w-2xl">
         <SettingsHeader title="Langue & Région" onBack={onBack} />
@@ -316,7 +457,7 @@ const LanguageForm = ({ onBack }: any) => (
                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 pointer-events-none" />
                 </div>
             </div>
-             <div>
+            <div>
                 <label className="block text-slate-700 dark:text-slate-300 font-medium mb-2">Format de date</label>
                 <div className="relative">
                     <select className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 appearance-none text-slate-700 dark:text-slate-200">
@@ -395,7 +536,7 @@ const PaymentForm = ({ onBack }: any) => (
 // --- VUE PRINCIPALE DES PARAMÈTRES ---
 
 const SettingsView = () => {
-    const [subView, setSubView] = useState('main'); // 'main', 'password', 'notifications', 'payment', 'theme', 'language'
+    const [subView, setSubView] = useState('main');
 
     const SettingsItem = ({ icon: Icon, title, subtitle, onClick, color = "text-slate-600" }: any) => (
         <div onClick={onClick} className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 group">
@@ -435,7 +576,7 @@ const SettingsView = () => {
             <Section title="Compte & Sécurité">
                 <SettingsItem icon={Lock} title="Mot de passe" subtitle="Modifiez votre mot de passe." color="text-blue-600" onClick={() => setSubView('password')} />
                 <SettingsItem icon={CreditCard} title="Paiements" subtitle="Gérez vos cartes bancaires." color="text-green-600" onClick={() => setSubView('payment')} />
-                <SettingsItem icon={Smartphone} title="Authentification à deux facteurs" subtitle="Sécurité renforcée." color="text-purple-600" onClick={() => {}} />
+                <SettingsItem icon={Smartphone} title="Authentification à deux facteurs" subtitle="Sécurité renforcée." color="text-purple-600" onClick={() => { }} />
             </Section>
 
             <Section title="Préférences">
@@ -445,9 +586,9 @@ const SettingsView = () => {
             </Section>
 
             <Section title="Légal & Support">
-                <SettingsItem icon={Shield} title="Politique de Confidentialité" subtitle="Contrôlez vos données." color="text-emerald-600" onClick={() => {}} />
-                <SettingsItem icon={FileText} title="Conditions d'utilisation" subtitle="Règles de la plateforme." color="text-blue-600" onClick={() => {}} />
-                <Link href="/Help"><SettingsItem icon={HelpCircle} title="Aide & Support" subtitle="Contactez notre équipe." color="text-red-500" onClick={() => {}} /></Link>
+                <SettingsItem icon={Shield} title="Politique de Confidentialité" subtitle="Contrôlez vos données." color="text-emerald-600" onClick={() => { }} />
+                <SettingsItem icon={FileText} title="Conditions d'utilisation" subtitle="Règles de la plateforme." color="text-blue-600" onClick={() => { }} />
+                <Link href="/Help"><SettingsItem icon={HelpCircle} title="Aide & Support" subtitle="Contactez notre équipe." color="text-red-500" onClick={() => { }} /></Link>
             </Section>
 
             <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700">
@@ -463,12 +604,13 @@ const SettingsView = () => {
 // --- PAGE PRINCIPALE ---
 
 export default function ProfilePage() {
+    const { user, logout } = useAuth(); // Utilisation du contexte Auth
     const [activeTab, setActiveTab] = useState<"info" | "home" | "favorite" | "transactions" | "notifications" | "settings">("info");
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // État pour le menu mobile
 
     const menuItems = [
         { id: "home", label: "Tableau de bord", icon: LayoutGrid },
         { id: "info", label: "Informations", icon: User },
-        // Ajout du bouton Abonnement
         { id: "plans_link", label: "Mon Abonnement", icon: Crown },
         { id: "favorite", label: "Favoris", icon: Heart },
         { id: "transactions", label: "Transactions", icon: DollarSign },
@@ -478,39 +620,71 @@ export default function ProfilePage() {
     const renderContent = () => {
         switch (activeTab) {
             case "home": return <TransactionsView type="locations" />;
-            case "info": return <InformationView />;
+            case "info": return <InformationView user={user} />; // Passer l'user à la vue
             case "favorite": return <FavoriteView />;
             case "transactions": return <TransactionsView type="payments" />;
             case "notifications": return <NotificationsView />;
             case "settings": return <SettingsView />;
-            default: return <InformationView />;
+            default: return <InformationView user={user} />;
         }
     };
 
+    const handleTabChange = (id: any) => {
+        if (id === "plans_link") return; // Si c'est un lien, on ne fait rien ici (géré par Link)
+        setActiveTab(id);
+        setIsMobileMenuOpen(false); // Fermer le menu après clic
+    };
+
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 font-sans flex flex-col">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 font-sans flex flex-col transition-colors duration-300">
+            {/* Header */}
             <header className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50 px-6 md:px-12 py-4">
                 <div className="flex items-center justify-between max-w-[1440px] mx-auto">
                     <Link href="/" className="text-2xl font-bold flex items-center gap-1">
                         <div className="bg-blue-600 text-white p-1 rounded-lg"><Car size={24} /></div>
                         <span className="text-blue-600">EASY</span><span className="text-orange-500">-RENT</span>
                     </Link>
+
+                    {/* Bouton Hamburger Mobile */}
+                    <button
+                        className="md:hidden p-2 text-slate-600 dark:text-slate-300"
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+
                     <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300">
                         <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
                         <Link href="/CarsPage" className="hover:text-blue-600 transition-colors">Cars</Link>
                         <Link href="/Agencies" className="hover:text-blue-600 transition-colors">Agencies</Link>
                         <Link href="/Help" className="hover:text-blue-600 transition-colors">Help</Link>
                     </nav>
-                    <div className="flex gap-4 items-center pl-4 border-l border-slate-200 dark:border-slate-700 ml-4">
+
+                    <div className="hidden md:flex gap-4 items-center pl-4 border-l border-slate-200 dark:border-slate-700 ml-4">
                         <button className="p-2 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 hover:bg-blue-100 transition"><Heart size={20} /></button>
-                        <div className="w-9 h-9 bg-gradient-to-tr from-orange-400 to-orange-600 rounded-full border-2 border-white dark:border-slate-800 shadow-sm overflow-hidden"><Image src="/assets/default-avatar.jpeg" alt="User" width={36} height={36} className="object-cover w-full h-full" /></div>
+                        <div className="w-9 h-9 bg-gradient-to-tr from-orange-400 to-orange-600 rounded-full border-2 border-white dark:border-slate-800 shadow-sm overflow-hidden flex items-center justify-center text-white font-bold">
+                            {user?.fullName?.charAt(0) || "U"}
+                        </div>
                     </div>
                 </div>
             </header>
 
-            <div className="flex flex-1 items-start max-w-[1440px] mx-auto w-full">
-                <aside className="w-full md:w-72 bg-white dark:bg-slate-800 flex flex-col py-8 border-r border-slate-200 dark:border-slate-700 sticky top-20 h-[calc(100vh-80px)] hidden md:flex flex-shrink-0 rounded-br-3xl">
-                    <div className="px-6 mb-4">
+            <div className="flex flex-1 items-start max-w-[1440px] mx-auto w-full relative">
+
+                {/* --- SIDEBAR (Mobile & Desktop) --- */}
+                <aside className={`
+                    fixed inset-y-0 left-0 z-40 w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 
+                    transform transition-transform duration-300 ease-in-out
+                    md:translate-x-0 md:static md:h-[calc(100vh-80px)] md:sticky md:top-20 md:flex md:flex-col py-8 rounded-br-3xl
+                    ${isMobileMenuOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}
+                `}>
+                    <div className="px-6 mb-4 mt-16 md:mt-0">
+                        {/* Header Mobile du menu */}
+                        <div className="flex justify-between items-center md:hidden mb-6">
+                            <span className="font-bold text-lg text-slate-800 dark:text-white">Menu</span>
+                            <button onClick={() => setIsMobileMenuOpen(false)}><X className="text-slate-500" /></button>
+                        </div>
+
                         <p className="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Menu Principal</p>
                         <nav className="space-y-1">
                             {menuItems.map((item) => (
@@ -521,33 +695,52 @@ export default function ProfilePage() {
                                         </button>
                                     </Link>
                                 ) : (
-                                    <button key={item.id} onClick={() => setActiveTab(item.id as any)} className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${activeTab === item.id ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'}`}>
+                                    <button
+                                        key={item.id}
+                                        onClick={() => handleTabChange(item.id)}
+                                        className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${activeTab === item.id ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm border-r-4 border-blue-600 dark:border-blue-400' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'}`}
+                                    >
                                         <item.icon className={`w-5 h-5 ${activeTab === item.id ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} /> {item.label}
                                     </button>
                                 )
                             ))}
                         </nav>
                     </div>
+
                     <div className="mt-auto px-6 pt-4 border-t border-slate-100 dark:border-slate-700">
                         <p className="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Autres</p>
                         <nav className="space-y-1">
-                            <button onClick={() => setActiveTab("settings")} className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'settings' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'}`}>
+                            <button onClick={() => handleTabChange("settings")} className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'settings' ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white'}`}>
                                 <Settings className={`w-5 h-5 ${activeTab === 'settings' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} /> Paramètres
                             </button>
-                            <button className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl text-sm font-medium transition-colors"><LogOut className="w-5 h-5" /> Déconnexion</button>
+                            {/* BOUTON DÉCONNEXION */}
+                            <button
+                                onClick={logout}
+                                className="flex items-center gap-3 w-full px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl text-sm font-medium transition-colors"
+                            >
+                                <LogOut className="w-5 h-5" /> Déconnexion
+                            </button>
                         </nav>
                     </div>
                 </aside>
 
-                <div className="md:hidden bg-white dark:bg-slate-800 p-4 flex justify-between items-center sticky top-20 z-40 border-b border-slate-200 dark:border-slate-700 w-full">
-                    <span className="font-bold text-slate-700 dark:text-white">Menu Profil</span>
-                    <button className="p-2 bg-slate-100 dark:bg-slate-700 rounded-lg"><LayoutGrid size={24} className="text-slate-600 dark:text-slate-300" /></button>
-                </div>
+                {/* Overlay sombre pour mobile */}
+                {isMobileMenuOpen && (
+                    <div className="fixed inset-0 bg-black/50 z-30 md:hidden backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
+                )}
 
                 <main className="flex-1 p-6 md:p-10 w-full">
+                    {/* Header Mobile Only pour le titre */}
+                    <div className="md:hidden mb-6 flex items-center justify-between">
+                        <h2 className="text-xl font-bold text-slate-900 dark:text-white capitalize">
+                            {activeTab === 'home' ? 'Tableau de bord' : activeTab}
+                        </h2>
+                    </div>
+
                     <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
                         <div>
-                            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Mon Espace</h1>
+                            {/* BONJOUR DYNAMIQUE */}
+                            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Bonjour, {user?.fullName?.split(' ')[0] || "Invité"} !</h1>
                             <p className="text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500"></span> Compte actif • Connecté</p>
                         </div>
                         <div className="flex items-center gap-4 w-full md:w-auto">

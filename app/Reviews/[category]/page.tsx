@@ -31,8 +31,12 @@ const ReviewItemCard = ({ data, type }: { data: any, type: 'vehicle' | 'driver' 
     <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-lg transition-all group flex flex-col h-full">
       <div className="flex items-start gap-4 mb-6">
         <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 flex-shrink-0">
-          <Image src={image} alt={title} fill className="object-cover" />
-        </div>
+<Image 
+    src={image || "/assets/car1.jpeg"} // Sécurité aussi sur l'image
+    alt={title || "Image de l'avis"}   // <--- C'EST ICI LA CLÉ (Le || ajoute un texte par défaut)
+    fill 
+    className="object-cover" 
+/>        </div>
         <div>
           <h3 className="text-xl font-bold text-slate-800 mb-1 line-clamp-1">{title}</h3>
           <p className="text-sm text-slate-500 mb-2 flex items-center gap-1">

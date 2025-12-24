@@ -71,7 +71,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* --- VOS AUTRES SECTIONS --- */}
       <StatsSection />
       <div className="py-8 bg-slate-50"><Testimonials /></div>
     </div>

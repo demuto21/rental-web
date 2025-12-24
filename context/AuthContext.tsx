@@ -1,68 +1,76 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
-// Définition de l'utilisateur (doit correspondre à votre Java User.java)
 interface User {
   id: number;
   fullName: string;
   email: string;
-  role: "USER" | "ADMIN" | "AGENCY" | "DRIVER";
+  role: string;
+  avatar?: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (userData: User) => void;
+  login: (userData: any) => void;
   logout: () => void;
-  protect: (path: string) => void;
+  protect: (redirectUrl: string) => void; // <--- AJOUT DE LA FONCTION PROTECT
   isLoading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    // Au chargement de l'app, on vérifie si l'utilisateur est déjà connecté
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        if (parsedUser && parsedUser.id) {
+            setUser(parsedUser);
+        } else {
+            localStorage.removeItem("user");
+        }
+      } catch (e) {
+        console.error("Erreur lecture user localStorage", e);
+        localStorage.removeItem("user");
+      }
     }
     setIsLoading(false);
   }, []);
 
-  // --- FONCTION DE CONNEXION ET REDIRECTION ---
-  const login = (userData: User) => {
-    // 1. On sauvegarde l'utilisateur
-    localStorage.setItem("user", JSON.stringify(userData));
-    setUser(userData);
-
-    // 2. AIGUILLAGE SELON LE RÔLE
-    // C'est ici que tout se décide !
-    if (userData.role === "AGENCY") {
-      router.push("/Dashboard/Agency"); // Agence -> Son tableau de bord
-    } else if (userData.role === "DRIVER") {
-      router.push("/Dashboard/Driver"); // Chauffeur -> Son tableau de bord
-    } else {
-      router.push("/"); // Client classique -> Accueil
+  const login = (userData: any) => {
+    if (!userData || !userData.id) {
+        console.error("Erreur Login : L'objet utilisateur ne contient pas d'ID", userData);
+        return;
     }
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+    
+    if (userData.role === 'AGENCY') router.push('/Dashboard/Agency');
+    else if (userData.role === 'DRIVER') router.push('/Dashboard/Driver');
+    else router.push('/Profil');
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
     setUser(null);
+    localStorage.removeItem("user");
     router.push("/Login");
   };
 
-  const protect = (path: string) => {
+  // --- NOUVELLE FONCTION PROTECT ---
+  const protect = (redirectUrl: string) => {
     if (!user) {
+      // Si pas connecté, on redirige vers Login (on pourrait passer l'URL de retour en paramètre)
       router.push("/Login");
     } else {
-      router.push(path);
+      // Si connecté, on va vers la page demandée
+      router.push(redirectUrl);
     }
   };
 
@@ -73,4 +81,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth doit être utilisé dans un AuthProvider");
+  }
+  return context;
+};

@@ -158,7 +158,7 @@ export default function RegisterForm() {
                     value={formData.lastName}
                     onChange={handleChange}
                     className={`w-full px-4 py-3 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${errors.lastName ? 'border-red-300' : 'border-slate-200'}`}
-                    placeholder="Dupont"
+                    placeholder="Fred"
                 />
                 {errors.lastName && <p className="text-red-500 text-xs mt-1 ml-1">{errors.lastName}</p>}
             </div>

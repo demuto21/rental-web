@@ -2,11 +2,12 @@ export interface Car {
   id: number;
   name: string;
   price: number;
+  monthlyPrice?: number; // Champ pour l'abonnement
   currency: string;
   type: string;
   fuel: string;
   seats: number;
-  transmission: string; // "Manuelle" ou "Automatique"
+  transmission: string;
   rating: number;
   reviewsCount: number;
   isFavorite: boolean;
@@ -33,11 +34,13 @@ export interface Car {
   }[];
 }
 
+// ATTENTION : L'export doit s'appeler "allCars" pour que le reste du site fonctionne
 export const allCars: Car[] = [
   {
     id: 1,
     name: "Audi Rouge Sport",
     price: 150000,
+    monthlyPrice: 2500000, // Prix abonnement ajouté
     currency: "CFA",
     type: "Sport",
     fuel: "Essence",
@@ -49,7 +52,7 @@ export const allCars: Car[] = [
     tag: "Populaire",
     image: "/assets/car2.jpeg", 
     gallery: ["/assets/car2.jpeg", "/assets/car1.jpeg", "/assets/car3.jpeg", "/assets/car4.jpeg"],
-    description: "Une voiture sportive élégante, parfaite pour les mariages ou les week-ends de luxe. Confort absolu et puissance garantie.",
+    description: "Une voiture sportive élégante, parfaite pour les mariages ou les week-ends de luxe.",
     location: "Yaoundé, Route de Kribi",
     specs: {
       modele: "R8 Coupé",
@@ -61,14 +64,15 @@ export const allCars: Car[] = [
       portes: 2
     },
     reviewsList: [
-      { id: 1, user: "Manuella DK", avatar: "/assets/default-avatar.jpeg", rating: 5, comment: "J'ai adoré cette voiture, elle est très confortable !" },
-      { id: 2, user: "Paul H.", avatar: "/assets/default-avatar.jpeg", rating: 4, comment: "Superbe expérience de conduite." }
+      { id: 1, user: "Manuella DK", avatar: "/assets/default-avatar.jpeg", rating: 5, comment: "J'ai adoré cette voiture !" },
+      { id: 2, user: "Paul H.", avatar: "/assets/default-avatar.jpeg", rating: 4, comment: "Superbe expérience." }
     ]
   },
   {
     id: 2,
     name: "Toyota Fortuner",
     price: 85000,
+    monthlyPrice: 1500000, // Prix abonnement ajouté
     currency: "CFA",
     type: "SUV",
     fuel: "Diesel",
@@ -79,8 +83,8 @@ export const allCars: Car[] = [
     isFavorite: false,
     tag: "Familial",
     image: "/assets/fortuner.jpg",
-    gallery: ["/assets/fortuner.jpg", "/assets/car6.png", "/assets/car5.png", "/assets/car3.jpeg"],
-    description: "Le SUV parfait pour les routes camerounaises. Robuste, spacieux et sécurisé pour toute la famille.",
+    gallery: ["/assets/fortuner.jpg", "/assets/car6.png", "/assets/car5.png"],
+    description: "Le SUV parfait pour les routes camerounaises. Robuste et spacieux.",
     location: "Douala, Bonapriso",
     specs: {
       modele: "Fortuner",
@@ -92,13 +96,14 @@ export const allCars: Car[] = [
       portes: 5
     },
     reviewsList: [
-      { id: 1, user: "Jean Marc", avatar: "/assets/default-avatar.jpeg", rating: 5, comment: "Très robuste pour aller à l'Ouest." }
+      { id: 1, user: "Jean Marc", avatar: "/assets/default-avatar.jpeg", rating: 5, comment: "Très robuste." }
     ]
   },
   {
     id: 3,
     name: "Mercedes GLE 450",
     price: 120000,
+    monthlyPrice: 2800000, // Prix abonnement ajouté
     currency: "CFA",
     type: "Luxe",
     fuel: "Hybride",
@@ -109,8 +114,8 @@ export const allCars: Car[] = [
     isFavorite: true,
     tag: "Premium",
     image: "/assets/mercedes gle.webp",
-    gallery: ["/assets/car6.png", "/assets/limousine.jpg", "/assets/car2.jpeg"],
-    description: "Le summum du luxe et de la technologie. Idéal pour les rendez-vous d'affaires.",
+    gallery: ["/assets/car6.png", "/assets/limousine.jpg"],
+    description: "Le summum du luxe et de la technologie.",
     location: "Yaoundé, Bastos",
     specs: {
       modele: "GLE 450",
@@ -127,6 +132,7 @@ export const allCars: Car[] = [
     id: 4,
     name: "Limousine Alpha",
     price: 200000,
+    // Pas d'abonnement pour une limousine
     currency: "CFA",
     type: "Luxe",
     fuel: "Essence",
@@ -137,7 +143,7 @@ export const allCars: Car[] = [
     isFavorite: true,
     tag: "VIP",
     image: "/assets/limousine.jpg",
-    gallery: ["/assets/limousine.jpg", "/assets/car1.jpeg"],
+    gallery: ["/assets/limousine.jpg"],
     description: "Pour vos événements les plus prestigieux.",
     location: "Douala, Akwa",
     specs: {
