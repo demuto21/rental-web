@@ -2,11 +2,14 @@ import { Inter, Poppins } from 'next/font/google';
 import type { ReactNode } from 'react';
 // @ts-ignore: allow importing global CSS without type declaration
 import './globals.css';
-import Footer from '@/components/Footer'; 
-import Landings from '@/components/Landings';
-import { AuthProvider } from '@/context/AuthContext'; // <-- AJOUT
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
+import { AuthProvider } from '@/context/AuthContext';
+import { NotificationProvider } from '@/context/NotificationContext'; // <-- AJOUT
 
-const inter = Inter({ 
+import { FavoriteProvider } from '@/context/FavoriteContext';
+
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
 });
@@ -22,16 +25,21 @@ export const metadata = {
   description: 'Rent your Dream Car',
 }
 
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr" className={`${inter.variable} ${poppins.variable} antialiased`}>
       <body className="flex flex-col min-h-screen">
-        <AuthProvider> {/* <-- PROTECTION GLOBALE */}
-          <Landings />  
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer /> 
+        <AuthProvider>
+          <NotificationProvider>
+            <FavoriteProvider>
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </FavoriteProvider>
+          </NotificationProvider>
         </AuthProvider>
       </body>
     </html>

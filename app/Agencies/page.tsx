@@ -8,7 +8,8 @@ import {
   Star, Clock, Building2, Car, ArrowRight, Settings, Loader2
 } from "lucide-react";
 // On remplace l'import statique par le service API
-import { agencyService } from "@/services/api";
+import { agencyService, searchService } from "@/services/api";
+import { allAgencies } from "@/modules/agenciesData";
 
 // Fonction utilitaire pour calculer l'ouverture (sans toucher au design)
 const isShopOpen = (openingHours: string) => {
@@ -94,64 +95,29 @@ export default function AgenciesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCity, setSelectedCity] = useState("Tous");
   const [openOnly, setOpenOnly] = useState(false);
-  
-  // États API
-  const [agencies, setAgencies] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  // CHARGEMENT DES DONNÉES RÉELLES
+  // On utilise directement les données mockées pour Vercel
+  const [agencies, setAgencies] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    const fetchAgencies = async () => {
-      try {
-        const response = await agencyService.getAll();
-        setAgencies(response.data);
-      } catch (error) {
-        console.error("Erreur chargement agences:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchAgencies();
+    setAgencies(allAgencies);
   }, []);
 
   const filteredAgencies = agencies.filter(agency => {
-    // Calcul de l'ouverture pour le filtre
     const isOpen = isShopOpen(agency.openingHours);
-    
-    return (
-      agency.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (selectedCity === "Tous" || agency.city === selectedCity) &&
-      (!openOnly || isOpen)
-    );
+    const matchName = agency.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchCity = selectedCity === "Tous" || agency.city === selectedCity;
+    const matchOpen = !openOnly || isOpen;
+
+    return matchName && matchCity && matchOpen;
   });
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-blue-600 font-bold"><Loader2 className="animate-spin mr-2"/> Chargement...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-blue-600 font-bold"><Loader2 className="animate-spin mr-2" /> Chargement...</div>;
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
-      {/* NAVBAR IDENTIQUE */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50 px-6 md:px-12 py-4">
-        <div className="flex items-center justify-between max-w-[1440px] mx-auto">
-          <Link href="/" className="text-2xl font-bold flex items-center gap-1">
-            <div className="bg-blue-600 text-white p-1 rounded-lg"><Building2 size={24} /></div>
-            <span className="text-blue-600">EASY</span><span className="text-orange-500">-RENT</span>
-          </Link>
-          <div className="hidden md:flex flex-1 max-w-lg mx-8 bg-slate-100 rounded-full px-4 py-2.5 items-center border border-transparent focus-within:border-blue-300 transition-all">
-            <Search size={18} className="text-slate-400 mr-2" />
-            <input type="text" placeholder="Rechercher..." className="bg-transparent outline-none w-full text-slate-700 placeholder-slate-400 text-sm" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-          </div>
-          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-            <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-            <Link href="/CarsPage" className="hover:text-blue-600 transition-colors">Cars</Link>
-            <Link href="/Agencies" className="text-blue-600">Agencies</Link>
-            <Link href="/Help" className="hover:text-blue-600 transition-colors">Help</Link>
-          </nav>
-          <div className="flex gap-4 items-center pl-4 border-l border-slate-200 ml-4">
-            <button className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition"><Heart size={20} /></button>
-            <Link href="/Profil"><button className="p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition text-slate-600"><Settings size={20} /></button></Link>
-          </div>
-        </div>
-      </header>
+      {/* HEADER SUPPRIMÉ CAR GÉRÉ PAR LE LAYOUT */}
 
       <main className="max-w-[1440px] mx-auto p-6 flex flex-col md:flex-row gap-8 relative mt-4">
         {/* Sidebar Filtres (Identique) */}
@@ -160,6 +126,21 @@ export default function AgenciesPage() {
             <h2 className="text-slate-800 text-xl font-bold flex items-center gap-2"><SlidersHorizontal size={20} className="text-blue-600" /> Filtres</h2>
             <button onClick={() => { setSearchTerm(""); setSelectedCity("Tous"); setOpenOnly(false); }} className="text-xs text-blue-600 hover:underline font-medium">Réinitialiser</button>
           </div>
+
+          <div className="mb-6">
+            <label className="text-slate-700 font-semibold text-sm mb-3 block">Rechercher une agence</label>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Nom de l'agence..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+            </div>
+          </div>
+
           <div className="mb-6">
             <label className="text-slate-700 font-semibold text-sm mb-3 block">Ville</label>
             <div className="flex flex-wrap gap-2">
